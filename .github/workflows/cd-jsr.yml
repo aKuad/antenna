@@ -1,0 +1,19 @@
+name: CD for JSR
+
+on:
+  push:
+    tags: v*.*.**
+
+jobs:
+  deno-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write # for auth JSR
+      contents: read
+
+    steps:
+    - name: Source checkout
+      uses: actions/checkout@v4
+    - name: Publish to JSR
+      run: npx jsr publish

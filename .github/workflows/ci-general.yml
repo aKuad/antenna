@@ -1,0 +1,32 @@
+name: CI for general
+
+on:
+  push:
+    branches: '**'
+
+jobs:
+  trailing-spaces-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Source checkout
+      uses: actions/checkout@v4
+    - name: Trailing whitespaces check
+      run: |
+        text_files=`find ./ -type f -not -path './.git/*' | xargs -I {} file --mime {} | grep -v 'charset=binary' | sed -E -e 's/: .*$//g'`
+
+        violating_files=""
+
+        while read file; do
+          # Are there lines what has trailing whitespaces
+          if [ "`grep -E '\s+$' \"$file\"`" != "" ]; then
+            violating_files="$violating_files$file%0A"  # %0A for newline at GitHub Actions log
+          fi
+        done << EOF
+          `echo "$text_files"`
+        EOF
+
+        if [ "$violating_files" != "" ]; then
+          echo "::error ::There are some violating files%0A$violating_files"
+          exit 1
+        fi
