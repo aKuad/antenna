@@ -4,6 +4,15 @@
  */
 
 /**
+ * Explain a target of a feed
+ */
+export type Feed = {
+  type: "rss" | "atom"
+  url: string
+};
+
+
+/**
  * Data structure of a post
  */
 export type Post = {
