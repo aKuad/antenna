@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Error case - No title at an entry</title>
+  <updated>2025-07-06T00:00:00Z</updated>
+  <id>any-id-root</id>
+
+  <entry>
+    <updated>2025-07-06T00:01:00Z</updated>
+    <id>any-id-entry1</id>
+  </entry>
+</feed>
