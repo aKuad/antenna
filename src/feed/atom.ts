@@ -3,7 +3,7 @@
  * @module
  */
 
-import { parse, xml_node } from "jsr:@libs/xml";
+import { parse, xml_node } from "jsr:@libs/xml@7";
 
 import { Post } from "../types.ts";
 
