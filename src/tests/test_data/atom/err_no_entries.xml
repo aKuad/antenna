@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Error case - No entries</title>
+  <updated>2025-07-06T00:00:00Z</updated>
+  <id>any-id-here</id>
+</feed>

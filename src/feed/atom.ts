@@ -3,7 +3,7 @@
  * @module
  */
 
-import { parse, xml_node } from "jsr:@libs/xml";
+import { parse, xml_node } from "jsr:@libs/xml@7";
 
 import { Post } from "../types.ts";
 
@@ -23,6 +23,7 @@ export async function fetch_atom(atom_url: string): Promise<Post[]> {
     return[];
   if(!res.ok) {
     console.error(`Fetch from Atom ${atom_url} - HTTP error respond: ${res.statusText}`);
+    await res.body?.cancel();
     return [];
   }
 
