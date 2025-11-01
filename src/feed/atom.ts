@@ -65,7 +65,7 @@ export async function fetch_atom(atom_url: string): Promise<Post[]> {
 
 
   // Other core data
-  const site_name   = new URL(atom_url).host;
+  const site_name   = new URL(atom_url).hostname;
   const site_origin = new URL(atom_url).origin;
 
 
