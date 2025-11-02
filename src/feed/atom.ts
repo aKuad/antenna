@@ -87,7 +87,7 @@ export async function fetch_atom(atom_url: string): Promise<Post[]> {
     }
     const title_str = title_node["#text"];
 
-    const updated_node  = entry?.["~children"].find(node => node["~name"] === "updated");
+    const updated_node = entry?.["~children"].find(node => node["~name"] === "updated");
     if(!updated_node) {
       console.error(`Fetch from Atom ${atom_url} - <updated> tag required in a <entry>, but not found`);
       return;
