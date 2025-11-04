@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title>General title</title>
+  <updated>2025-11-01T10:00:00Z</updated>
+  <id>general-id</id>
+
+  <entry>
+    <title>Minimum case entry</title>
+    <updated>2025-11-01T10:01:00Z</updated>
+    <id>entry-id</id>
+  </entry>
+
+</feed>

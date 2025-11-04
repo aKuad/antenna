@@ -48,6 +48,7 @@ export async function fetch_atom(atom_url: string): Promise<Post[]> {
   const root_author_uri_node   = root_author_node ? root_author_node["~children"].find(node => node["~name"] === "uri")   : undefined;
   const root_author_name_str   = root_author_name_node  ? root_author_name_node["#text"]  : undefined;
   const root_author_email_str  = root_author_email_node ? root_author_email_node["#text"] : undefined;
+  const root_author_email_uri  = root_author_email_str ? ("mailto:" + root_author_email_str) : undefined;
   const root_author_uri_str    = root_author_uri_node   ? to_absolute_when_relative(root_author_uri_node["#text"], atom_url) : undefined;
 
   const root_link_node = <xml_node | undefined>feed["~children"].find(e => e["~name"] === "link");
@@ -64,7 +65,7 @@ export async function fetch_atom(atom_url: string): Promise<Post[]> {
 
 
   // Other core data
-  const site_name   = new URL(atom_url).host;
+  const site_name   = new URL(atom_url).hostname;
   const site_origin = new URL(atom_url).origin;
 
 
@@ -86,7 +87,7 @@ export async function fetch_atom(atom_url: string): Promise<Post[]> {
     }
     const title_str = title_node["#text"];
 
-    const updated_node  = entry?.["~children"].find(node => node["~name"] === "updated");
+    const updated_node = entry?.["~children"].find(node => node["~name"] === "updated");
     if(!updated_node) {
       console.error(`Fetch from Atom ${atom_url} - <updated> tag required in a <entry>, but not found`);
       return;
@@ -99,6 +100,7 @@ export async function fetch_atom(atom_url: string): Promise<Post[]> {
     const author_uri_node   = author_node ? author_node["~children"].find(node => node["~name"] === "uri")   : undefined;
     const author_name_str   = author_name_node  ? author_name_node["#text"]  : undefined;
     const author_email_str  = author_email_node ? author_email_node["#text"] : undefined;
+    const author_email_uri  = author_email_str ? ("mailto:" + author_email_str) : undefined;
     const author_uri_str    = author_uri_node   ? to_absolute_when_relative(author_uri_node["#text"], atom_url) : undefined;
 
     const content_node = <xml_node | undefined>entry?.["~children"].find(node => node["~name"] === "content");
@@ -119,7 +121,7 @@ export async function fetch_atom(atom_url: string): Promise<Post[]> {
       title: title_str,
       url: link_str || root_link_str || site_origin,
       author_name: author_name_str || root_author_name_str || site_name,
-      author_url: author_uri_str || root_author_uri_str || ("mailto:" + author_email_str) || ("mailto:" + root_author_email_str),
+      author_url: author_uri_str || root_author_uri_str || author_email_uri || root_author_email_uri,
       author_icon_url: undefined,
       description: summary_str || content_str || root_subtitle_str,
       thumbnail_url: root_logo_str,
@@ -132,16 +134,24 @@ export async function fetch_atom(atom_url: string): Promise<Post[]> {
 }
 
 
-function to_absolute_when_relative(may_relative_url: string, feed_url: string): string {
+/**
+ * Convert a path to absolute URI - If already absolute, return original URI
+ * @private
+ *
+ * @param may_relative_uri URI string to convert
+ * @param feed_uri URI origin of `may_relative_url`
+ * @returns Absolute URI
+ */
+function to_absolute_when_relative(may_relative_uri: string, feed_uri: string): string {
   try {
     // When `Invalid URL` not thrown, it was absolute URL
-    new URL(may_relative_url);
-    return may_relative_url;
+    new URL(may_relative_uri);
+    return may_relative_uri;
 
   } catch(_) {
     // When thrown, it was relative URL
-    const url = new URL(feed_url);
-    url.pathname = may_relative_url;
+    const url = new URL(feed_uri);
+    url.pathname = may_relative_uri;
     return url.href;
   }
 }

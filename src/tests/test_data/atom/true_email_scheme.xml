@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title>General title</title>
+  <updated>2025-11-01T21:00:00Z</updated>
+    <author>
+    <name>General author</name>
+    <email>general-author@example.com</email>
+  </author>
+  <id>general-id</id>
+
+  <entry>
+    <title>Author specified entry</title>
+    <updated>2025-11-01T20:01:00Z</updated>
+    <author>
+      <name>Entry author</name>
+      <email>entry-author@example.com</email>
+    </author>
+    <id>entry-id</id>
+  </entry>
+
+  <entry>
+    <title>Minimum case entry</title>
+    <updated>2025-11-01T20:02:00Z</updated>
+    <id>entry-id</id>
+  </entry>
+
+</feed>
