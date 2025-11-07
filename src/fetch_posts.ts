@@ -6,6 +6,8 @@
 import { Feed } from "./types.ts";
 import { fetch_atom } from "./feed/atom.ts";
 
+import { Post } from "./types.ts";
+
 
 /**
  * Posts fetching from specified services
@@ -13,7 +15,7 @@ import { fetch_atom } from "./feed/atom.ts";
  * @param targets Targets to fetch posts
  * @returns Fetched posts
  */
-export async function fetch_posts(targets: Array<Feed>) {
+export async function fetch_posts(targets: Array<Feed>): Promise<Post[]> {
   const all_posts_promises = targets.map(target => {
     switch(target.type) {
       case "atom":
