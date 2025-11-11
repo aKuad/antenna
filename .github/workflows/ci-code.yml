@@ -16,11 +16,14 @@ jobs:
         working-directory: src/tests
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: denoland/setup-deno@v2
+    - name: Source checkout
+      uses: actions/checkout@v4
+    - name: Setup Deno
+      uses: denoland/setup-deno@v2
       with:
         deno-version: v2.x
-    - run: deno test --allow-read --allow-net
+    - name: Test all modules
+      run: deno test --allow-read --allow-net
 
 
   # Lint all TS code by Deno
@@ -31,8 +34,11 @@ jobs:
         working-directory: src
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: denoland/setup-deno@v2
+    - name: Source checkout
+      uses: actions/checkout@v4
+    - name: Setup Deno
+      uses: denoland/setup-deno@v2
       with:
         deno-version: v2.x
-    - run: deno lint
+    - name: Lint all TS files
+      run: deno lint
