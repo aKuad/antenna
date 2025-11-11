@@ -9,7 +9,7 @@ on:
 
 jobs:
   # Test all TS code by Deno
-  denotest:
+  deno-test:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -27,7 +27,7 @@ jobs:
 
 
   # Lint all TS code by Deno
-  denolint:
+  deno-lint:
     runs-on: ubuntu-latest
     defaults:
       run:
