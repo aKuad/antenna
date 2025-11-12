@@ -24,6 +24,13 @@ jobs:
         deno-version: v2.x
     - name: Test all modules
       run: deno test --allow-read --allow-net
+    - name: Report coverage
+      env:
+        NO_COLOR: "true"  # Disable deno color output
+      run: |
+        echo '## Deno coverage report' >> $GITHUB_STEP_SUMMARY
+        echo >> $GITHUB_STEP_SUMMARY  # Print blank newline
+        deno coverage >> $GITHUB_STEP_SUMMARY
 
 
   # Lint all TS code by Deno
