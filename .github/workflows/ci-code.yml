@@ -23,7 +23,7 @@ jobs:
       with:
         deno-version: v2.x
     - name: Test all modules
-      run: deno test --allow-read --allow-net
+      run: deno test --allow-read --allow-net --coverage
     - name: Report coverage
       env:
         NO_COLOR: "true"  # Disable deno color output
