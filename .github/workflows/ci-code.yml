@@ -5,10 +5,36 @@ on:
     branches:
     - 'main'
     - 'feature/**'
+    - 'infra/**'
 
 jobs:
-  # Lint all JS code by Deno
-  js-denolint:
+  # Test all TS code by Deno
+  deno-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/tests
+
+    steps:
+    - name: Source checkout
+      uses: actions/checkout@v4
+    - name: Setup Deno
+      uses: denoland/setup-deno@v2
+      with:
+        deno-version: v2.x
+    - name: Test all modules
+      run: deno test --allow-read --allow-net --coverage
+    - name: Report coverage
+      env:
+        NO_COLOR: "true"  # Disable deno color output
+      run: |
+        echo '## Deno coverage report' >> $GITHUB_STEP_SUMMARY
+        echo >> $GITHUB_STEP_SUMMARY  # Print blank newline
+        deno coverage >> $GITHUB_STEP_SUMMARY
+
+
+  # Lint all TS code by Deno
+  deno-lint:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -17,9 +43,9 @@ jobs:
     steps:
     - name: Source checkout
       uses: actions/checkout@v4
-    - name: Set up Deno
+    - name: Setup Deno
       uses: denoland/setup-deno@v2
       with:
         deno-version: v2.x
-    - name: Lint all js/ts files
+    - name: Lint all TS files
       run: deno lint
