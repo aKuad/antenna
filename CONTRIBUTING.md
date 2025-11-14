@@ -82,9 +82,9 @@ But in JavaScript, constant variables can be written in lower_snake_case. Becaus
 
 ### Test code
 
-Make a test code at `src/tests/<site_name>.ts`.
+Make a test code at `src/tests/<site_name>.test.ts`.
 
-Not for automatically test. Just run `src/site/<site_name>.ts` manually with any account.
+More detail of conventions, see [`src/tests/README.md`](src/tests/README.md).
 
 ## Messages syntax conventions
 
