@@ -67,12 +67,12 @@ Feature fix `fix/*` Feature fix - something need modification
 
 ### Files naming
 
-- Place at `src/site/`, with `snake_case.ts` naming.
+- Place at `src/services/`, with `snake_case.ts` naming.
   - `src/` for only core code.
-- If the site name includes upper case, replace them to lower case.
-- If the site name includes spaces, replace them to `_`.
+- If the service name includes upper case, replace them to lower case.
+- If the service name includes spaces, replace them to `_`.
 
-e.g. `Site name` -> `site_name.ts`
+e.g. `Service name` -> `service_name.ts`
 
 ### Functions and variables (etc.) naming
 
@@ -82,7 +82,7 @@ But in JavaScript, constant variables can be written in lower_snake_case. Becaus
 
 ### Test code
 
-Make a test code at `src/tests/<site_name>.test.ts`.
+Make a test code at `src/tests/<service_name>.test.ts`.
 
 More detail of conventions, see [`src/tests/README.md`](src/tests/README.md).
 

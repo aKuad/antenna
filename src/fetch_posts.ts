@@ -4,7 +4,7 @@
  */
 
 import { Feed } from "./types.ts";
-import { fetch_atom } from "./feed/atom.ts";
+import { fetch_atom } from "./services/atom.ts";
 
 import { Post } from "./types.ts";
 
