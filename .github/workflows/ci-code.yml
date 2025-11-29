@@ -49,3 +49,21 @@ jobs:
         deno-version: v2.x
     - name: Lint all TS files
       run: deno lint
+
+
+  # Doc lint all TS code by Deno
+  deno-doc-lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src
+
+    steps:
+    - name: Source checkout
+      uses: actions/checkout@v4
+    - name: Setup Deno
+      uses: denoland/setup-deno@v2
+      with:
+        deno-version: v2.x
+    - name: Doc lint all TS files
+      run: deno doc --lint *.ts */*.ts
