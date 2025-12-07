@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss>
+  <channel>
+    <title>General title</title>
+    <link>http://example.com/articles</link>
+    <description>General description</description>
+    <webMaster>web-master@example.com (Web Master)</webMaster>
+
+    <item>
+      <title>webMaster test case item - title</title>
+    </item>
+  </channel>
+</rss>

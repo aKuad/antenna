@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss>
+  <channel>
+    <title>General title</title>
+    <link>http://example.com/articles</link>
+    <description>General description</description>
+    <copyright>Copyright 2025, aKuad</copyright>
+
+    <item>
+      <title>copyright test case item - title</title>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss>
+  <channel>
+    <title>Error case - No items</title>
+    <link>http://localhost:8000/articles</link>
+    <description>Error case - No items</description>
+  </channel>
+</rss>
