@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss>
+  <channel>
+    <title>General title</title>
+    <link>http://example.com/articles</link>
+    <description>General description</description>
+    <copyright>Copyright 2025, aKuad</copyright>
+    <managingEditor>managing-editor@example.com (Managing Editor)</managingEditor>
+    <webMaster>web-master@example.com (Web Master)</webMaster>
+    <pubDate>Thu, 04 Dec 2025 12:00:00 GMT</pubDate>
+    <lastBuildDate>Thu, 04 Dec 2025 12:10:00 GMT</lastBuildDate>
+    <image>
+      <url>http://example.com/channel-image.png</url>
+      <title>RSS channel image</title>
+      <link>http://example.com</link>
+    </image>
+
+    <item>
+      <title>Fully case item - title</title>
+      <description>Fully case item - description</description>
+      <link>http://example.com/articles/item1</link>
+      <author>item-author@example.com (Item author)</author>
+      <enclosure url="http://example.com/item-enclosure.png" length="1234" type="image/png"></enclosure>
+      <pubDate>Thu, 04 Dec 2025 01:00:00 GMT</pubDate>
+    </item>
+
+    <item>
+      <title>Non image enclosure item - title</title>
+      <enclosure url="http://example.com/non-image-enclosure.mp3" length="1234" type="audio/mpeg"></enclosure>
+    </item>
+
+    <item>
+      <title>Minimum case item - title</title>
+    </item>
+
+    <item>
+      <description>Minimum case item - description</description>
+    </item>
+  </channel>
+</rss>

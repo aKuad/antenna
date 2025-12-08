@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss>
+  <channel>
+    <title>Error case - No description at channel</title>
+    <link>http://localhost:8000/articles</link>
+
+    <item>
+      <title>Item title</title>
+    </item>
+  </channel>
+</rss>

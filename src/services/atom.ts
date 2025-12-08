@@ -6,6 +6,7 @@
 import { parse, xml_node } from "jsr:@libs/xml@7";
 
 import { Post } from "../types.ts";
+import { to_absolute_when_relative } from "../util/to_absolute_when_relative.ts";
 
 
 /**
@@ -131,27 +132,4 @@ export async function fetch_atom(atom_url: string): Promise<Post[]> {
   });
 
   return posts.filter(e => e !== undefined);
-}
-
-
-/**
- * Convert a path to absolute URI - If already absolute, return original URI
- * @private
- *
- * @param may_relative_uri URI string to convert
- * @param feed_uri URI origin of `may_relative_url`
- * @returns Absolute URI
- */
-function to_absolute_when_relative(may_relative_uri: string, feed_uri: string): string {
-  try {
-    // When `Invalid URL` not thrown, it was absolute URL
-    new URL(may_relative_uri);
-    return may_relative_uri;
-
-  } catch(_) {
-    // When thrown, it was relative URL
-    const url = new URL(feed_uri);
-    url.pathname = may_relative_uri;
-    return url.href;
-  }
 }

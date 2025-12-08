@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss>
+  <channel>
+    <title>Error case - No link at channel</title>
+    <description>Error case - No link at channel</description>
+
+    <item>
+      <title>Item title</title>
+    </item>
+  </channel>
+</rss>

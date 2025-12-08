@@ -3,10 +3,9 @@
  * @module
  */
 
-import { Feed } from "./types.ts";
+import { Feed, Post } from "./types.ts";
 import { fetch_atom } from "./services/atom.ts";
-
-import { Post } from "./types.ts";
+import { fetch_rss } from "./services/rss.ts";
 
 
 /**
@@ -20,6 +19,9 @@ export async function fetch_posts(targets: Array<Feed>): Promise<Post[]> {
     switch(target.type) {
       case "atom":
         return fetch_atom(target.url);
+
+      case "rss":
+        return fetch_rss(target.url);
 
       default:
         console.error(`Unsupported type - ${target.type}`);
