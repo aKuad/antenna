@@ -1,5 +1,7 @@
 # antenna
 
+[![JSR](https://jsr.io/badges/@akuad/antenna)](https://jsr.io/@akuad/antenna)
+
 Posts update collector library
 
 ## Usage
