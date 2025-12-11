@@ -55,6 +55,13 @@ Output example:
 ]
 ```
 
+## Supported services
+
+- Atom feed
+  - `{ type: "atom", url: "https://feed-url-here.com" }`
+- RSS feed
+  - `{ type: "rss", url: "https://feed-url-here.com" }`
+
 ## Using libraries
 
 [@libs/xml](https://jsr.io/@libs/xml) - Copyright (c) 2024 Simon Lecoq
