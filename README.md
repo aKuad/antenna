@@ -57,9 +57,9 @@ Output example:
 
 ## Supported services
 
-- Atom feed
+- [Atom feed](https://www.rfc-editor.org/rfc/rfc4287)
   - `{ type: "atom", url: "https://feed-url-here.com" }`
-- RSS feed
+- [RSS feed](https://www.rssboard.org/rss-specification)
   - `{ type: "rss", url: "https://feed-url-here.com" }`
 
 ## Using libraries
