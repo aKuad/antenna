@@ -3,6 +3,7 @@
  * @module
  */
 
+import { red, yellow } from "jsr:@std/fmt@1/colors";
 import { parse, xml_node } from "jsr:@libs/xml@7";
 
 import { Post } from "../types.ts";
@@ -18,12 +19,12 @@ import { to_absolute_when_relative } from "../util/to_absolute_when_relative.ts"
 export async function fetch_atom(atom_url: string): Promise<Post[]> {
   // Try to fetch
   const res = await fetch(atom_url).catch(err => {
-    console.error(`Fetch from Atom ${atom_url} - Failed to fetch cause: ${err}`);
+    console.error(red(`Fetch from Atom ${atom_url} - Failed to fetch cause: ${err}`));
   });
   if(!res)
     return[];
   if(!res.ok) {
-    console.error(`Fetch from Atom ${atom_url} - HTTP error respond: ${res.statusText}`);
+    console.error(red(`Fetch from Atom ${atom_url} - HTTP error respond: ${res.statusText}`));
     await res.body?.cancel();
     return [];
   }
@@ -31,13 +32,13 @@ export async function fetch_atom(atom_url: string): Promise<Post[]> {
 
   // XML root element extraction
   const xml = await res.text().then(text => parse(text)).catch(err => {
-    console.error(`Fetch from Atom ${atom_url} - Failed to parse XML cause: ${err}`);
+    console.error(red(`Fetch from Atom ${atom_url} - Failed to parse XML cause: ${err}`));
   });
   if(!xml)
     return [];
   const feed = <xml_node | undefined>xml["~children"].find(e => e["~name"] === "feed");
   if(!feed) {
-    console.error(`Fetch from Atom ${atom_url} - <feed> tag not found`);
+    console.error(red(`Fetch from Atom ${atom_url} - <feed> tag not found`));
     return [];
   }
 
@@ -73,7 +74,7 @@ export async function fetch_atom(atom_url: string): Promise<Post[]> {
   // <entry> elements extraction
   const entries = <xml_node[]>(<xml_node>feed)["~children"].filter(node => node["~name"] === "entry");
   if(entries.length === 0) {
-    console.warn(`Fetch from Atom ${atom_url} - No <entry> tags found`);
+    console.warn(yellow(`Fetch from Atom ${atom_url} - No <entry> tags found`));
     return [];
   }
 
@@ -83,14 +84,14 @@ export async function fetch_atom(atom_url: string): Promise<Post[]> {
     // Required elements
     const title_node = entry?.["~children"].find(node => node["~name"] === "title");
     if(!title_node) {
-      console.error(`Fetch from Atom ${atom_url} - <title> tag required in a <entry>, but not found`);
+      console.error(red(`Fetch from Atom ${atom_url} - <title> tag required in a <entry>, but not found`));
       return;
     }
     const title_str = title_node["#text"];
 
     const updated_node = entry?.["~children"].find(node => node["~name"] === "updated");
     if(!updated_node) {
-      console.error(`Fetch from Atom ${atom_url} - <updated> tag required in a <entry>, but not found`);
+      console.error(red(`Fetch from Atom ${atom_url} - <updated> tag required in a <entry>, but not found`));
       return;
     }
     const updated_date = new Date(updated_node["#text"]);
