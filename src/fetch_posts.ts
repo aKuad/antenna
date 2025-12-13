@@ -3,6 +3,8 @@
  * @module
  */
 
+import { red } from "jsr:@std/fmt@1/colors";
+
 import { Feed, Post } from "./types.ts";
 import { fetch_atom } from "./services/atom.ts";
 import { fetch_rss } from "./services/rss.ts";
@@ -24,7 +26,7 @@ export async function fetch_posts(targets: Array<Feed>): Promise<Post[]> {
         return fetch_rss(target.url);
 
       default:
-        console.error(`Unsupported type - ${target.type}`);
+        console.error(red(`Unsupported type - ${target.type}`));
         return Promise.resolve([]);
     }
   });

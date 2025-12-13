@@ -3,6 +3,7 @@
  * @author aKuad
  */
 
+import { red, yellow } from "jsr:@std/fmt@1/colors";
 import { parse, xml_node } from "jsr:@libs/xml@7";
 
 import { Post } from "../types.ts";
@@ -18,12 +19,12 @@ import { to_absolute_when_relative } from "../util/to_absolute_when_relative.ts"
 export async function fetch_rss(rss_url: string): Promise<Post[]> {
   // Try to fetch
   const res = await fetch(rss_url).catch(err => {
-    console.error(`Fetch from RSS ${rss_url} - Failed to fetch cause: ${err}`);
+    console.error(red(`Fetch from RSS ${rss_url} - Failed to fetch cause: ${err}`));
   });
   if(!res)
     return[];
   if(!res.ok) {
-    console.error(`Fetch from RSS ${rss_url} - HTTP error respond: ${res.statusText}`);
+    console.error(red(`Fetch from RSS ${rss_url} - HTTP error respond: ${res.statusText}`));
     await res.body?.cancel();
     return [];
   }
@@ -31,39 +32,39 @@ export async function fetch_rss(rss_url: string): Promise<Post[]> {
 
   // XML root element extraction
   const xml = await res.text().then(text => parse(text)).catch(err => {
-    console.error(`Fetch from RSS ${rss_url} - Failed to parse XML cause: ${err}`);
+    console.error(red(`Fetch from RSS ${rss_url} - Failed to parse XML cause: ${err}`));
   });
   if(!xml)
     return [];
   const rss = <xml_node | undefined>xml["~children"].find(node => node["~name"] === "rss");
   if(!rss) {
-    console.error(`Fetch from RSS ${rss_url} - <rss> tag not found`);
+    console.error(red(`Fetch from RSS ${rss_url} - <rss> tag not found`));
     return [];
   }
   const channel = <xml_node | undefined>rss["~children"].find(node => node["~name"] === "channel");
   if(!channel) {
-    console.error(`Fetch from RSS ${rss_url} - <channel> tag not found`);
+    console.error(red(`Fetch from RSS ${rss_url} - <channel> tag not found`));
     return [];
   }
 
   // <channel> required contents extraction
   const root_title_node = <xml_node | undefined>channel["~children"].find(node => node["~name"] === "title");
   if(!root_title_node) {
-    console.error(`Fetch from RSS ${rss_url} - <title> tag not found in <channel>`);
+    console.error(red(`Fetch from RSS ${rss_url} - <title> tag not found in <channel>`));
     return [];
   }
   const root_title_str  = root_title_node["#text"];
 
   const root_link_node = <xml_node | undefined>channel["~children"].find(node => node["~name"] === "link");
   if(!root_link_node) {
-    console.error(`Fetch from RSS ${rss_url} - <link> tag not found in <channel>`);
+    console.error(red(`Fetch from RSS ${rss_url} - <link> tag not found in <channel>`));
     return [];
   }
   const root_link_str  = root_link_node["#text"];
 
   const root_description_node = <xml_node | undefined>channel["~children"].find(node => node["~name"] === "description");
   if(!root_description_node) {
-    console.error(`Fetch from RSS ${rss_url} - <description> tag not found in <channel>`);
+    console.error(red(`Fetch from RSS ${rss_url} - <description> tag not found in <channel>`));
     return [];
   }
   const root_description_str  = root_description_node["#text"];
@@ -99,7 +100,7 @@ export async function fetch_rss(rss_url: string): Promise<Post[]> {
   // <item> elements extraction
   const items = <xml_node[]>(<xml_node>channel)["~children"].filter(node => node["~name"] === "item");
   if(items.length === 0) {
-    console.warn(`Fetch from RSS ${rss_url} - No <item> tags found`);
+    console.warn(yellow(`Fetch from RSS ${rss_url} - No <item> tags found`));
     return [];
   }
 
@@ -112,7 +113,7 @@ export async function fetch_rss(rss_url: string): Promise<Post[]> {
     const title_str        = title_node       ? title_node["#text"]       : undefined;
     const description_str  = description_node ? description_node["#text"] : undefined;
     if(!title_node && !description_node) {
-      console.error(`Fetch from RSS ${rss_url} - Least one of <title> or <description> tag required, but not found`);
+      console.error(red(`Fetch from RSS ${rss_url} - Least one of <title> or <description> tag required, but not found`));
       return;
     }
 
