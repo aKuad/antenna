@@ -1,0 +1,16 @@
+{
+  "name": "@akuad/antenna",
+  "version": "0.0.0",
+  "license": "CC0",
+  "exports": "./src/mod.ts",
+  "publish": {
+    "include": [
+      "LICENSE",
+      "README.md",
+      "src/"
+    ],
+    "exclude": [
+      "src/tests/"
+    ]
+  }
+}
