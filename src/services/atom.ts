@@ -50,7 +50,7 @@ export async function fetch_atom(atom_url: string): Promise<Post[]> {
   const root_author_uri_node   = root_author_node ? root_author_node["~children"].find(node => node["~name"] === "uri")   : undefined;
   const root_author_name_str   = root_author_name_node  ? root_author_name_node["#text"]  : undefined;
   const root_author_email_str  = root_author_email_node ? root_author_email_node["#text"] : undefined;
-  const root_author_email_uri  = root_author_email_str ? ("mailto:" + root_author_email_str) : undefined;
+  const root_author_email_uri  = root_author_email_str  ? ("mailto:" + root_author_email_str) : undefined;
   const root_author_uri_str    = root_author_uri_node   ? to_absolute_when_relative(root_author_uri_node["#text"], atom_url) : undefined;
 
   const root_link_node = <xml_node | undefined>feed["~children"].find(e => e["~name"] === "link");
@@ -102,14 +102,14 @@ export async function fetch_atom(atom_url: string): Promise<Post[]> {
     const author_uri_node   = author_node ? author_node["~children"].find(node => node["~name"] === "uri")   : undefined;
     const author_name_str   = author_name_node  ? author_name_node["#text"]  : undefined;
     const author_email_str  = author_email_node ? author_email_node["#text"] : undefined;
-    const author_email_uri  = author_email_str ? ("mailto:" + author_email_str) : undefined;
+    const author_email_uri  = author_email_str  ? ("mailto:" + author_email_str) : undefined;
     const author_uri_str    = author_uri_node   ? to_absolute_when_relative(author_uri_node["#text"], atom_url) : undefined;
 
     const content_node = <xml_node | undefined>entry?.["~children"].find(node => node["~name"] === "content");
     const content_str  = content_node ? content_node["#text"] : undefined;
 
     const link_node = <xml_node | undefined>entry?.["~children"].find(node => node["~name"] === "link");
-    const link_str  = link_node  && (typeof link_node["@href"] === "string") ? link_node["@href"] : undefined;
+    const link_str  = link_node && (typeof link_node["@href"] === "string") ? link_node["@href"] : undefined;
 
     const summary_node = <xml_node | undefined>entry?.["~children"].find(node => node["~name"] === "summary");
     const summary_str  = summary_node ? summary_node["#text"] : undefined;
