@@ -9,6 +9,7 @@
 export type Feed = {
   type: "rss" | "atom"
   url: string
+  headers?: HeadersInit
 };
 
 
