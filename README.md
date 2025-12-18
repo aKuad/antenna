@@ -7,7 +7,7 @@ Posts update collector library
 ## Usage
 
 ```js
-import { fetch_posts } from "jsr:@akuad/antenna@v0";
+import { fetch_posts } from "jsr:@akuad/antenna@0";
 
 const posts = await fetch_posts([
   { type: "atom", url: "https://github.com/akuad", headers: { "accept": "application/atom+xml" } },
