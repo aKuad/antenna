@@ -10,8 +10,8 @@ Posts update collector library
 import { fetch_posts } from "jsr:@akuad/antenna@v0";
 
 const posts = await fetch_posts([
-  { type: "atom", url: "https://qiita.com/aKuad/feed" },
-  { type: "rss" , url: "https://note.com/akuad/rss" }
+  { type: "atom", url: "https://github.com/akuad", headers: { "accept": "application/atom+xml" } },
+  { type: "rss" , url: "https://openai.com/news/rss.xml" }
 ]);
 
 console.log(posts);
@@ -23,44 +23,43 @@ Output example:
 [
   // ...
   {
-    site_name: "note.com",
-    site_icon_url: "https://note.com/favicon.ico",
-    title: "DMX コントローラ WebApp #14 タブ機能実装でちょっと CSS 芸",
-    url: "https://note.com/akuad/n/nca2fe53aec8b",
-    author_name: "aKuad",
+    site_name: "openai.com",
+    site_icon_url: "https://openai.com/favicon.ico",
+    title: "Introducing OpenAI Academy for News Organizations",
+    url: "https://openai.com/index/openai-academy-for-news-organizations",
+    author_name: "openai.com",
     author_url: undefined,
     author_icon_url: undefined,
-    description: `<h2 name="b324aa8e-78df-4771-8662-750b4f9f6fc8" id="b324aa8e-78df-4771-8662-750b4f9f6fc8">表示したり、非表示にしたり</h2><p name="60f08652-3697-4f1c-9300-4abe36da3f41" id="60f08652-3697-4f1c-9300-4abe36da3f41">前回の記事で紹介しました、フェーダーの表示範囲切り替えタブ。</p><br/><a href='https://note.com/akuad/n/nca2fe53aec8b'>続きをみる</a>`,
+    description: "OpenAI is launching the OpenAI Academy for News Organizations, a new learning hub built with the American Journalism Project and The Lenfest Institute to help newsrooms use AI effectively. The Academy offers training, practical use cases, and responsible-use guidance to support journalists, editors, and publishers as they adopt AI in their reporting and operations.",
     thumbnail_url: undefined,
-    post_date: 2025-12-05T14:03:06.000Z,
-    update_date: 2025-12-05T14:03:06.000Z
+    post_date: 2025-12-17T06:00:00.000Z,
+    update_date: 2025-12-17T06:00:00.000Z
   },
   {
-    site_name: "qiita.com",
-    site_icon_url: "https://qiita.com/favicon.ico",
-    title: "Issue/PR の Projects 登録時に Status 自動設定は Actions 無しで可能だった",
-    url: "https://qiita.com/aKuad/items/f5335d775fbac385b785",
+    site_name: "github.com",
+    site_icon_url: "https://github.com/favicon.ico",
+    title: "aKuad pushed zenn-articles",
+    url: "https://github.com/aKuad/zenn-articles/compare/3df9544a8e...05f8f92f8d",
     author_name: "aKuad",
-    author_url: undefined,
+    author_url: "https://github.com/aKuad",
     author_icon_url: undefined,
-    description: "Issue/PR の Projects 登録時のこと\n" +
-      "Issue や PR を、リストやボードの形で並べられて、タスク管理の可視化などに使える GitHub Projects。\n" +
-      "Issue/PR を Projects に登録時、初期値は NoStatus。\n" +
-      "\n" +
-      "これを毎回 ...",
+    description: '<div class="repo-push js-feed-item-view"><div class="body">\n' +
+      // Too long output here by github.com
+      "</div></div>",
     thumbnail_url: undefined,
-    post_date: 2025-12-05T22:06:39.000Z,
-    update_date: 2025-12-05T22:06:39.000Z
-  }
+    post_date: 2025-12-17T13:15:42.000Z,
+    update_date: 2025-12-17T13:15:42.000Z
+  },
+  // ...
 ]
 ```
 
 ## Supported services
 
 - [Atom feed](https://www.rfc-editor.org/rfc/rfc4287)
-  - `{ type: "atom", url: "https://feed-url-here.com" }`
+  - `{ type: "atom", url: string, headers?: HeadersInit }`
 - [RSS feed](https://www.rssboard.org/rss-specification)
-  - `{ type: "rss", url: "https://feed-url-here.com" }`
+  - `{ type: "rss", url: string, headers?: HeadersInit}`
 
 ## Using libraries
 
