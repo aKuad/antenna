@@ -2,17 +2,13 @@
  * Posts fetching tests from Atom feed
  */
 
-import { serveDir } from "jsr:@std/http@1";
 import { assertEquals } from "jsr:@std/assert@1";
 
 import { fetch_posts } from "../fetch_posts.ts";
 import { Post } from "../types.ts";
 
 
-Deno.test(async function tests(t) {
-  const test_server = Deno.serve(request => serveDir(request, { fsRoot: "./test_data", urlRoot: "", quiet: true }));
-
-
+export async function tests_atom(t: Deno.TestContext) {
   /**
    * - Can fetch and return posts data from specified URL
    */
@@ -121,7 +117,4 @@ Deno.test(async function tests(t) {
     assertEquals(await posts_no_title   , []);
     assertEquals(await posts_no_updated , []);
   });
-
-
-  await test_server.shutdown();
-});
+};

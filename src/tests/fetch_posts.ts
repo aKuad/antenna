@@ -2,16 +2,12 @@
  * `fetch_posts()` corner case test
  */
 
-import { serveDir } from "jsr:@std/http@1";
 import { assertEquals } from "jsr:@std/assert@1";
 
 import { fetch_posts } from "../fetch_posts.ts";
 
 
-Deno.test(async function tests(t) {
-  const test_server = Deno.serve(request => serveDir(request, { fsRoot: "./test_data", urlRoot: "", quiet: true }));
-
-
+export async function tests_fetch_posts(t: Deno.TestContext) {
   /**
    * - When unsupported target specified, returns empty array
    */
@@ -21,7 +17,4 @@ Deno.test(async function tests(t) {
     const posts = await fetch_posts([target]);
     assertEquals(posts, []);
   });
-
-
-  await test_server.shutdown();
-});
+};
