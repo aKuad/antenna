@@ -8,6 +8,11 @@ import { fetch_posts } from "../fetch_posts.ts";
 import { Post } from "../types.ts";
 
 
+/**
+ * Test set of rss.ts module
+ *
+ * @param t Deno test context for test step indication
+ */
 export async function tests_rss(t: Deno.TestContext) {
   /**
    * - Can fetch and return posts data from specified URL
