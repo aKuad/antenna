@@ -14,11 +14,12 @@ import { to_absolute_when_relative } from "../util/to_absolute_when_relative.ts"
  * Atom feed fetching
  *
  * @param atom_url URL of Atom XML
+ * @param headers Headers of HTTP fetching
  * @returns Extracted posts
  */
-export async function fetch_atom(atom_url: string): Promise<Post[]> {
+export async function fetch_atom(atom_url: string, headers?: HeadersInit): Promise<Post[]> {
   // Try to fetch
-  const res = await fetch(atom_url).catch(err => {
+  const res = await fetch(atom_url, { headers }).catch(err => {
     console.error(red(`Fetch from Atom ${atom_url} - Failed to fetch cause: ${err}`));
   });
   if(!res)

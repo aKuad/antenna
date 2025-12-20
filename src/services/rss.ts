@@ -14,11 +14,12 @@ import { to_absolute_when_relative } from "../util/to_absolute_when_relative.ts"
  * RSS feed fetching
  *
  * @param rss_url URL of RSS XML
+ * @param headers Headers of HTTP fetching
  * @returns Extracted posts
  */
-export async function fetch_rss(rss_url: string): Promise<Post[]> {
+export async function fetch_rss(rss_url: string, headers?: HeadersInit): Promise<Post[]> {
   // Try to fetch
-  const res = await fetch(rss_url).catch(err => {
+  const res = await fetch(rss_url, { headers }).catch(err => {
     console.error(red(`Fetch from RSS ${rss_url} - Failed to fetch cause: ${err}`));
   });
   if(!res)

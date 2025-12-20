@@ -20,10 +20,10 @@ export async function fetch_posts(targets: Array<Feed>): Promise<Post[]> {
   const all_posts_promises = targets.map(target => {
     switch(target.type) {
       case "atom":
-        return fetch_atom(target.url);
+        return fetch_atom(target.url, target.headers);
 
       case "rss":
-        return fetch_rss(target.url);
+        return fetch_rss(target.url, target.headers);
 
       default:
         console.error(red(`Unsupported type - ${target.type}`));
