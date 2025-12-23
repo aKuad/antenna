@@ -13,7 +13,6 @@ import { tests_rss } from "./rss.ts";
 
 Deno.test(async function tests(t) {
   const test_server = Deno.serve(request => {
-    console.log(request.headers.get("no-icon-test"));
     if(request.headers.get("no-icon-test") === "true" && new URL(request.url).pathname === "/favicon.ico")
       return new Response("Not Found", { status: 404, statusText: "Not Found" });
 
