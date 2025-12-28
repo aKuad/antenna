@@ -7,6 +7,9 @@
 import { serveDir } from "jsr:@std/http@1";
 
 import { tests_fetch_posts } from "./fetch_posts.ts";
+
+import { tests_is_resource_exists }  from "./is_resource_exists.ts";
+
 import { tests_atom } from "./atom.ts";
 import { tests_rss } from "./rss.ts";
 
@@ -20,6 +23,8 @@ Deno.test(async function tests(t) {
   });
 
   await tests_fetch_posts(t);
+
+  await tests_is_resource_exists(t);
 
   await tests_atom(t);
   await tests_rss(t);
