@@ -17,6 +17,6 @@ export async function tests_is_resource_exists(t: Deno.TestContext) {
    */
   await t.step(async function is_resource_exists_true() {
     assert     (await is_resource_exists("http://localhost:8000/favicon.ico"));
-    assertFalse(await is_resource_exists("http://localhost:8000/non-exist-item"));
+    assertFalse(await is_resource_exists("http://localhost:8000/favicon.ico", { "no-icon-test": "true" }));
   });
 };
