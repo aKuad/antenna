@@ -23,7 +23,7 @@ export async function tests_rss(t: Deno.TestContext) {
     const date_at_webMaster_test = new Date();
     const posts_copyright_actual = await fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/true_copyright.xml" }]);
     const date_at_copyright_test = new Date();
-    const posts_minimum_actual   = await fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/true_minimum.xml" }]);
+    const posts_minimum_actual   = await fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/true_minimum.xml", headers: { "no-icon-test": "true" } }]);
     const date_at_minimum_test   = new Date();
 
     const posts_general_expected: Post[] = [
@@ -116,7 +116,7 @@ export async function tests_rss(t: Deno.TestContext) {
     const posts_minimum_expected: Post[] = [
       {
         site_name: "localhost",
-        site_icon_url: "http://localhost:8000/favicon.ico",
+        site_icon_url: undefined,
         title: "Minimum case item - title",
         url: "http://example.com/articles",
         author_name: "localhost",

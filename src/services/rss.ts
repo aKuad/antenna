@@ -8,6 +8,7 @@ import { parse, xml_node } from "jsr:@libs/xml@7";
 
 import { Post } from "../types.ts";
 import { to_absolute_when_relative } from "../util/to_absolute_when_relative.ts";
+import { is_resource_exists } from "../util/is_resource_exists.ts";
 
 
 /**
@@ -94,8 +95,9 @@ export async function fetch_rss(rss_url: string, headers?: HeadersInit): Promise
 
 
   // Other core data
-  const site_name   = new URL(rss_url).hostname;
-  const site_origin = new URL(rss_url).origin;
+  const site_name     = new URL(rss_url).hostname;
+  const site_origin   = new URL(rss_url).origin;
+  const site_icon_uri = await is_resource_exists(site_origin + "/favicon.ico", headers) ? (site_origin + "/favicon.ico") : undefined;
 
 
   // <item> elements extraction
@@ -135,7 +137,7 @@ export async function fetch_rss(rss_url: string, headers?: HeadersInit): Promise
 
     return {
       site_name: site_name,
-      site_icon_url: (site_origin + "/favicon.ico"),
+      site_icon_url: site_icon_uri,
       title: title_str || root_title_str,
       url: link_str || root_link_str,
       author_name: author_name || root_managing_editor_name || root_web_master_name || root_copyright_str || site_name,

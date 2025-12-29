@@ -8,6 +8,7 @@ import { parse, xml_node } from "jsr:@libs/xml@7";
 
 import { Post } from "../types.ts";
 import { to_absolute_when_relative } from "../util/to_absolute_when_relative.ts";
+import { is_resource_exists } from "../util/is_resource_exists.ts";
 
 
 /**
@@ -68,8 +69,9 @@ export async function fetch_atom(atom_url: string, headers?: HeadersInit): Promi
 
 
   // Other core data
-  const site_name   = new URL(atom_url).hostname;
-  const site_origin = new URL(atom_url).origin;
+  const site_name     = new URL(atom_url).hostname;
+  const site_origin   = new URL(atom_url).origin;
+  const site_icon_url = await is_resource_exists(site_origin + "/favicon.ico", headers) ? (site_origin + "/favicon.ico") : undefined;
 
 
   // <entry> elements extraction
@@ -120,7 +122,7 @@ export async function fetch_atom(atom_url: string, headers?: HeadersInit): Promi
 
     return {
       site_name: site_name,
-      site_icon_url: root_icon_str || (site_origin + "/favicon.ico"),
+      site_icon_url: root_icon_str || site_icon_url,
       title: title_str,
       url: link_str || root_link_str || site_origin,
       author_name: author_name_str || root_author_name_str || site_name,
