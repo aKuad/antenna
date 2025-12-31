@@ -20,7 +20,7 @@ export async function tests_atom(t: Deno.TestContext) {
   await t.step(async function feed_atom_true() {
     const posts_general_actual      = await fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/true_general.xml" }]);
     const posts_email_scheme_actual = await fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/true_email_scheme.xml" }]);
-    const posts_minimum_actual      = await fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/true_minimum.xml" }]);
+    const posts_minimum_actual      = await fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/true_minimum.xml", headers: { "no-icon-test": "true" } }]);
 
     const posts_general_expected: Post[] = [
       {
@@ -83,7 +83,7 @@ export async function tests_atom(t: Deno.TestContext) {
     const posts_minimum_expected: Post[] = [
       {
         site_name: "localhost",
-        site_icon_url: "http://localhost:8000/favicon.ico",
+        site_icon_url: undefined,
         title: "Minimum case entry",
         url: "http://localhost:8000",
         author_name: "localhost",
