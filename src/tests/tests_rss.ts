@@ -17,7 +17,7 @@ export async function tests_rss(t: Deno.TestContext) {
   /**
    * - Can fetch and return posts data from specified URL
    */
-  await t.step(async function feed_rss_true() {
+  await t.step(async function rss_true() {
     const posts_general_actual   = await fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/true_general.xml" }]);
     const posts_webMaster_actual = await fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/true_webMaster.xml" }]);
     const date_at_webMaster_test = new Date();
@@ -140,7 +140,7 @@ export async function tests_rss(t: Deno.TestContext) {
    * - When invalid URL passed, returns empty array with error message logging
    * - When invalid file as RSS fetched, returns empty array with error message logging
    */
-  await t.step(async function feed_rss_err() {
+  await t.step(async function rss_err() {
     const posts_invalid_url    = fetch_posts([{ type: "rss", url: "non_url_string" }]);
     const posts_not_found      = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/non_existing_file" }]);
     const posts_non_xml        = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/err_non_xml.xml" }]);

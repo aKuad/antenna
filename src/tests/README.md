@@ -15,25 +15,21 @@ deno test --allow-net --allow-read
 deno test --allow-net --allow-read --coverage
 ```
 
-> [!WARN]
->
-> Do not add `--parallel` option.
-
 ## Coding conversions
 
 As standard, follow [Coding conventions](../../CONTRIBUTING.md#coding-conventions). Then follow below.
 
 ### Files place & naming
 
-`/src/tests/<service_name>.test.ts`
+File place and name: `/src/tests/tests_<service_or_module_name>.ts`
 
 ### Test function naming
 
-Root test function naming:
+Test set function naming: `tests_<service_or_module_name>`
 
-`<service_name>()`
+Then call the test set function from `test_entry.test.ts`. This file has test HTTP server up and shutdown process.
 
 Test step function naming:
 
-- Success expected case: `true_cases()`
-- Fail/error expected cases: `err_cases()`
+- Success expected case: `<service_or_module_name>_true()`
+- Fail/error expected cases: `<service_or_module_name>_err()`

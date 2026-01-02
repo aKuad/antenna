@@ -6,12 +6,12 @@
 
 import { serveDir } from "jsr:@std/http@1";
 
-import { tests_fetch_posts } from "./fetch_posts.ts";
+import { tests_fetch_posts } from "./tests_fetch_posts.ts";
 
-import { tests_is_resource_exists }  from "./is_resource_exists.ts";
+import { tests_is_resource_exists }  from "./tests_is_resource_exists.ts";
 
-import { tests_atom } from "./atom.ts";
-import { tests_rss } from "./rss.ts";
+import { tests_atom } from "./tests_atom.ts";
+import { tests_rss } from "./tests_rss.ts";
 
 
 Deno.test(async function tests(t) {
