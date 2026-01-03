@@ -1,6 +1,6 @@
 ---
 name: Feature
-about: Code editing
+about: Code editing (other of service add)
 title: ''
 labels: tg/feature
 assignees: ''
