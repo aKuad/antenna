@@ -17,7 +17,7 @@ export async function tests_atom(t: Deno.TestContext) {
   /**
    * - Can fetch and return posts data from specified URL
    */
-  await t.step(async function feed_atom_true() {
+  await t.step(async function atom_true() {
     const posts_general_actual      = await fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/true_general.xml" }]);
     const posts_email_scheme_actual = await fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/true_email_scheme.xml" }]);
     const posts_minimum_actual      = await fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/true_minimum.xml", headers: { "no-icon-test": "true" } }]);
@@ -106,7 +106,7 @@ export async function tests_atom(t: Deno.TestContext) {
    * - When invalid URL passed, returns empty array with error message logging
    * - When invalid file as atom fetched, returns empty array with error message logging
    */
-  await t.step(async function feed_atom_err() {
+  await t.step(async function atom_err() {
     const posts_invalid_url = fetch_posts([{ type: "atom", url: "non_url_string" }]);
     const posts_not_found   = fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/non_existing_file" }]);
     const posts_non_xml     = fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/err_non_xml.xml" }]);
