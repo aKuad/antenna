@@ -15,9 +15,13 @@ import { tests_rss } from "./tests_rss.ts";
 
 
 Deno.test(async function tests(t) {
-  const test_server = Deno.serve(request => {
+  const test_server = Deno.serve(async request => {
     if(request.headers.get("no-icon-test") === "true" && new URL(request.url).pathname === "/favicon.ico")
       return new Response("Not Found", { status: 404, statusText: "Not Found" });
+
+    const response_delay_ms = request.headers.get("late-response-test");
+    if(response_delay_ms)
+      await new Promise(resolve => setTimeout(resolve, Number(response_delay_ms)));
 
     return serveDir(request, { fsRoot: "./test_data", urlRoot: "", quiet: true })
   });
