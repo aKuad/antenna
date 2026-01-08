@@ -108,6 +108,7 @@ export async function tests_atom(t: Deno.TestContext) {
    */
   await t.step(async function atom_err() {
     const posts_invalid_url = fetch_posts([{ type: "atom", url: "non_url_string" }]);
+    const posts_timeout     = fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/true_general.xml", timeout_ms: 100, headers: { "late-response-test": "500" } }]);
     const posts_not_found   = fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/non_existing_file" }]);
     const posts_non_xml     = fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/err_non_xml.xml" }]);
     const posts_no_feed     = fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/err_no_feed.xml" }]);
@@ -115,6 +116,7 @@ export async function tests_atom(t: Deno.TestContext) {
     const posts_no_title    = fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/err_no_title.xml" }]);
     const posts_no_updated  = fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/err_no_updated.xml" }]);
     assertEquals(await posts_invalid_url, []);
+    assertEquals(await posts_timeout    , []);
     assertEquals(await posts_not_found  , []);
     assertEquals(await posts_non_xml    , []);
     assertEquals(await posts_no_feed    , []);
