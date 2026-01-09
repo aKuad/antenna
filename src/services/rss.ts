@@ -16,11 +16,13 @@ import { is_resource_exists } from "../util/is_resource_exists.ts";
  *
  * @param rss_url URL of RSS XML
  * @param headers Headers of HTTP fetching
+ * @param timeout_ms Limit duration of fetching in milliseconds
  * @returns Extracted posts
  */
-export async function fetch_rss(rss_url: string, headers?: HeadersInit): Promise<Post[]> {
+export async function fetch_rss(rss_url: string, headers?: HeadersInit, timeout_ms?: number): Promise<Post[]> {
   // Try to fetch
-  const res = await fetch(rss_url, { headers }).catch(err => {
+  const signal = timeout_ms ? AbortSignal.timeout(timeout_ms) : undefined;
+  const res = await fetch(rss_url, { headers, signal }).catch(err => {
     console.error(red(`Fetch from RSS ${rss_url} - Failed to fetch cause: ${err}`));
   });
   if(!res)

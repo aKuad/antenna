@@ -142,6 +142,7 @@ export async function tests_rss(t: Deno.TestContext) {
    */
   await t.step(async function rss_err() {
     const posts_invalid_url    = fetch_posts([{ type: "rss", url: "non_url_string" }]);
+    const posts_timeout        = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/true_general.xml", timeout_ms: 100, headers: { "late-response-test": "500" } }]);
     const posts_not_found      = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/non_existing_file" }]);
     const posts_non_xml        = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/err_non_xml.xml" }]);
     const posts_no_rss         = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/err_no_rss.xml" }]);
@@ -152,6 +153,7 @@ export async function tests_rss(t: Deno.TestContext) {
     const posts_no_items       = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/err_no_items.xml" }]);
     const posts_empty_item     = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/err_empty_item.xml" }]);
     assertEquals(await posts_invalid_url    , []);
+    assertEquals(await posts_timeout        , []);
     assertEquals(await posts_not_found      , []);
     assertEquals(await posts_non_xml        , []);
     assertEquals(await posts_no_rss         , []);
