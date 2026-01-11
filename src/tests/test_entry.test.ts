@@ -33,5 +33,6 @@ Deno.test(async function tests(t) {
   await tests_atom(t);
   await tests_rss(t);
 
+  await new Promise(resolve => setTimeout(resolve, 100)); // Interval for fetch() completed before shutdown
   await test_server.shutdown();
 });
