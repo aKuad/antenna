@@ -10,9 +10,9 @@ Posts update collector library
 import { fetch_posts } from "jsr:@akuad/antenna@0";
 
 const posts = await fetch_posts([
-  { type: "atom", url: "https://github.com/akuad", headers: { "accept": "application/atom+xml" } },
+  { type: "atom", url: "https://github.com/akuad", headers: { "accept": "application/atom+xml", timeout_ms: 5000 } },
   { type: "rss" , url: "https://openai.com/news/rss.xml" }
-]);
+], 10000);
 
 console.log(posts);
 ```
@@ -54,12 +54,23 @@ Output example:
 ]
 ```
 
-## Supported services
+## Options ans supported services
+
+### General options
+
+- `headers?: HeadersInit`
+  - Additional HTTP headers on data fetch
+- `timeout_ms?: number`
+  - Limit duration of fetching
+
+Timeout also can be specified at `fetch_posts([targets], timeout_ms)`. When both are specified, individual specified value will be accepted.
+
+### Services
 
 - [Atom feed](https://www.rfc-editor.org/rfc/rfc4287)
-  - `{ type: "atom", url: string, headers?: HeadersInit }`
+  - `{ type: "atom", url: string }`
 - [RSS feed](https://www.rssboard.org/rss-specification)
-  - `{ type: "rss", url: string, headers?: HeadersInit}`
+  - `{ type: "rss", url: string }`
 
 ## Using libraries
 
