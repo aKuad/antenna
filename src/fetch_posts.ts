@@ -14,7 +14,7 @@ import { fetch_rss } from "./services/rss.ts";
  * Posts fetching from specified services
  *
  * @param targets Targets to fetch posts
- * @param timeout_ms Limit duration of fetching in milliseconds
+ * @param timeout_ms Limit duration of all fetching in milliseconds (Individual option overwrites it when specified)
  * @returns Fetched posts
  */
 export async function fetch_posts(targets: Array<Feed>, timeout_ms?: number): Promise<Post[]> {
