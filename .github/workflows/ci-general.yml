@@ -10,7 +10,7 @@ jobs:
 
     steps:
     - name: Source checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
     - name: Trailing whitespaces check
       run: |
         text_files=`find ./ -type f -not -path './.git/*' | xargs -I {} file --mime {} | grep -v 'charset=binary' | sed -E -e 's/: .*$//g'`
