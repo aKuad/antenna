@@ -2,18 +2,29 @@
  * Posts fetching tests from RSS feed
  */
 
+import { serveDir } from "jsr:@std/http@1";
 import { assertEquals } from "jsr:@std/assert@1";
+
+import { sleep } from "../util/sleep.ts";
 
 import { fetch_posts } from "../fetch_posts.ts";
 import { Post } from "../types.ts";
 
 
-/**
- * Test set of rss.ts module
- *
- * @param t Deno test context for test step indication
- */
-export async function tests_rss(t: Deno.TestContext) {
+Deno.test(async function test_rss(t) {
+  /* Test HTTP server start */
+  const test_server = Deno.serve(async request => {
+    if(request.headers.get("no-icon-test") === "true" && new URL(request.url).pathname === "/favicon.ico")
+      return new Response("Not Found", { status: 404, statusText: "Not Found" });
+
+    const response_delay_ms = request.headers.get("late-response-test");
+    if(response_delay_ms)
+      await new Promise(resolve => setTimeout(resolve, Number(response_delay_ms)));
+
+    return serveDir(request, { fsRoot: "./test_data", urlRoot: "", quiet: true })
+  });
+
+
   /**
    * - Can fetch and return posts data from specified URL
    */
@@ -164,4 +175,9 @@ export async function tests_rss(t: Deno.TestContext) {
     assertEquals(await posts_no_items       , []);
     assertEquals(await posts_empty_item     , []);
   });
-};
+
+
+  /* Test HTTP server shutdown */
+  await sleep(100); // Interval for fetch() completed before shutdown
+  await test_server.shutdown();
+});
