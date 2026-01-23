@@ -7,12 +7,7 @@ import { assertEquals } from "jsr:@std/assert@1";
 import { fetch_posts } from "../fetch_posts.ts";
 
 
-/**
- * Test set of fetch_posts.ts module
- *
- * @param t Deno test context for test step indication
- */
-export async function tests_fetch_posts(t: Deno.TestContext) {
+Deno.test(async function test_fetch_posts(t) {
   /**
    * - When unsupported target specified, returns empty array
    */
@@ -22,4 +17,4 @@ export async function tests_fetch_posts(t: Deno.TestContext) {
     const posts = await fetch_posts([target]);
     assertEquals(posts, []);
   });
-};
+});
