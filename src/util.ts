@@ -13,7 +13,7 @@
  */
 export async function is_resource_exists(url: string, headers?: HeadersInit): Promise<boolean> {
   const res = await fetch(url, { headers });
-  await res.body?.cancel();
+  await res.bytes();
   return res.ok;
 }
 

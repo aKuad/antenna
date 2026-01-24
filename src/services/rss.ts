@@ -28,7 +28,7 @@ export async function fetch_rss(rss_url: string, headers?: HeadersInit, timeout_
     return[];
   if(!res.ok) {
     console.error(red(`Fetch from RSS ${rss_url} - HTTP error respond: ${res.statusText}`));
-    await res.body?.cancel();
+    await res.bytes();
     return [];
   }
 

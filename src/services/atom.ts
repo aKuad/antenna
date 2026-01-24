@@ -28,7 +28,7 @@ export async function fetch_atom(atom_url: string, headers?: HeadersInit, timeou
     return[];
   if(!res.ok) {
     console.error(red(`Fetch from Atom ${atom_url} - HTTP error respond: ${res.statusText}`));
-    await res.body?.cancel();
+    await res.bytes();
     return [];
   }
 
