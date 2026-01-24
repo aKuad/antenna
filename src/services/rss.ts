@@ -7,8 +7,7 @@ import { red, yellow } from "jsr:@std/fmt@1/colors";
 import { parse, xml_node } from "jsr:@libs/xml@7";
 
 import { Post } from "../types.ts";
-import { to_absolute_when_relative } from "../util/to_absolute_when_relative.ts";
-import { is_resource_exists } from "../util/is_resource_exists.ts";
+import { is_resource_exists, to_absolute_when_relative } from "../util.ts";
 
 
 /**
