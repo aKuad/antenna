@@ -5,7 +5,7 @@
 import { serveDir } from "jsr:@std/http@1";
 import { assertEquals } from "jsr:@std/assert@1";
 
-import { sleep } from "../util/sleep.ts";
+import { sleep } from "../util.ts";
 
 import { fetch_posts } from "../fetch_posts.ts";
 import { Post } from "../types.ts";
