@@ -21,7 +21,7 @@ Deno.test(async function test_atom(t) {
     if(response_delay_ms)
       await new Promise(resolve => setTimeout(resolve, Number(response_delay_ms)));
 
-    return serveDir(request, { fsRoot: "./test_data", urlRoot: "", quiet: true })
+    return serveDir(request, { fsRoot: "./test_data/atom", urlRoot: "", quiet: true });
   });
 
 
@@ -29,9 +29,9 @@ Deno.test(async function test_atom(t) {
    * - Can fetch and return posts data from specified URL
    */
   await t.step(async function atom_true() {
-    const posts_general_actual      = await fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/true_general.xml" }]);
-    const posts_email_scheme_actual = await fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/true_email_scheme.xml" }]);
-    const posts_minimum_actual      = await fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/true_minimum.xml", headers: { "no-icon-test": "true" } }]);
+    const posts_general_actual      = await fetch_posts([{ type: "atom", url: "http://localhost:8000/true_general.xml" }]);
+    const posts_email_scheme_actual = await fetch_posts([{ type: "atom", url: "http://localhost:8000/true_email_scheme.xml" }]);
+    const posts_minimum_actual      = await fetch_posts([{ type: "atom", url: "http://localhost:8000/true_minimum.xml", headers: { "no-icon-test": "true" } }]);
 
     const posts_general_expected: Post[] = [
       {
@@ -119,13 +119,13 @@ Deno.test(async function test_atom(t) {
    */
   await t.step(async function atom_err() {
     const posts_invalid_url = fetch_posts([{ type: "atom", url: "non_url_string" }]);
-    const posts_timeout     = fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/true_general.xml", timeout_ms: 100, headers: { "late-response-test": "500" } }]);
-    const posts_not_found   = fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/non_existing_file" }]);
-    const posts_non_xml     = fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/err_non_xml.xml" }]);
-    const posts_no_feed     = fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/err_no_feed.xml" }]);
-    const posts_no_entries  = fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/err_no_entries.xml" }]);
-    const posts_no_title    = fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/err_no_title.xml" }]);
-    const posts_no_updated  = fetch_posts([{ type: "atom", url: "http://localhost:8000/atom/err_no_updated.xml" }]);
+    const posts_timeout     = fetch_posts([{ type: "atom", url: "http://localhost:8000/true_general.xml", timeout_ms: 100, headers: { "late-response-test": "500" } }]);
+    const posts_not_found   = fetch_posts([{ type: "atom", url: "http://localhost:8000/non_existing_file" }]);
+    const posts_non_xml     = fetch_posts([{ type: "atom", url: "http://localhost:8000/err_non_xml.xml" }]);
+    const posts_no_feed     = fetch_posts([{ type: "atom", url: "http://localhost:8000/err_no_feed.xml" }]);
+    const posts_no_entries  = fetch_posts([{ type: "atom", url: "http://localhost:8000/err_no_entries.xml" }]);
+    const posts_no_title    = fetch_posts([{ type: "atom", url: "http://localhost:8000/err_no_title.xml" }]);
+    const posts_no_updated  = fetch_posts([{ type: "atom", url: "http://localhost:8000/err_no_updated.xml" }]);
     assertEquals(await posts_invalid_url, []);
     assertEquals(await posts_timeout    , []);
     assertEquals(await posts_not_found  , []);

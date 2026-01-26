@@ -21,7 +21,7 @@ Deno.test(async function test_rss(t) {
     if(response_delay_ms)
       await new Promise(resolve => setTimeout(resolve, Number(response_delay_ms)));
 
-    return serveDir(request, { fsRoot: "./test_data", urlRoot: "", quiet: true })
+    return serveDir(request, { fsRoot: "./test_data/rss", urlRoot: "", quiet: true })
   });
 
 
@@ -29,12 +29,12 @@ Deno.test(async function test_rss(t) {
    * - Can fetch and return posts data from specified URL
    */
   await t.step(async function rss_true() {
-    const posts_general_actual   = await fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/true_general.xml" }]);
-    const posts_webMaster_actual = await fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/true_webMaster.xml" }]);
+    const posts_general_actual   = await fetch_posts([{ type: "rss", url: "http://localhost:8000/true_general.xml" }]);
+    const posts_webMaster_actual = await fetch_posts([{ type: "rss", url: "http://localhost:8000/true_webMaster.xml" }]);
     const date_at_webMaster_test = new Date();
-    const posts_copyright_actual = await fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/true_copyright.xml" }]);
+    const posts_copyright_actual = await fetch_posts([{ type: "rss", url: "http://localhost:8000/true_copyright.xml" }]);
     const date_at_copyright_test = new Date();
-    const posts_minimum_actual   = await fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/true_minimum.xml", headers: { "no-icon-test": "true" } }]);
+    const posts_minimum_actual   = await fetch_posts([{ type: "rss", url: "http://localhost:8000/true_minimum.xml", headers: { "no-icon-test": "true" } }]);
     const date_at_minimum_test   = new Date();
 
     const posts_general_expected: Post[] = [
@@ -153,16 +153,16 @@ Deno.test(async function test_rss(t) {
    */
   await t.step(async function rss_err() {
     const posts_invalid_url    = fetch_posts([{ type: "rss", url: "non_url_string" }]);
-    const posts_timeout        = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/true_general.xml", timeout_ms: 100, headers: { "late-response-test": "500" } }]);
-    const posts_not_found      = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/non_existing_file" }]);
-    const posts_non_xml        = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/err_non_xml.xml" }]);
-    const posts_no_rss         = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/err_no_rss.xml" }]);
-    const posts_no_channel     = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/err_no_channel.xml" }]);
-    const posts_no_title       = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/err_no_title.xml" }]);
-    const posts_no_link        = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/err_no_link.xml" }]);
-    const posts_no_description = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/err_no_description.xml" }]);
-    const posts_no_items       = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/err_no_items.xml" }]);
-    const posts_empty_item     = fetch_posts([{ type: "rss", url: "http://localhost:8000/rss/err_empty_item.xml" }]);
+    const posts_timeout        = fetch_posts([{ type: "rss", url: "http://localhost:8000/true_general.xml", timeout_ms: 100, headers: { "late-response-test": "500" } }]);
+    const posts_not_found      = fetch_posts([{ type: "rss", url: "http://localhost:8000/non_existing_file" }]);
+    const posts_non_xml        = fetch_posts([{ type: "rss", url: "http://localhost:8000/err_non_xml.xml" }]);
+    const posts_no_rss         = fetch_posts([{ type: "rss", url: "http://localhost:8000/err_no_rss.xml" }]);
+    const posts_no_channel     = fetch_posts([{ type: "rss", url: "http://localhost:8000/err_no_channel.xml" }]);
+    const posts_no_title       = fetch_posts([{ type: "rss", url: "http://localhost:8000/err_no_title.xml" }]);
+    const posts_no_link        = fetch_posts([{ type: "rss", url: "http://localhost:8000/err_no_link.xml" }]);
+    const posts_no_description = fetch_posts([{ type: "rss", url: "http://localhost:8000/err_no_description.xml" }]);
+    const posts_no_items       = fetch_posts([{ type: "rss", url: "http://localhost:8000/err_no_items.xml" }]);
+    const posts_empty_item     = fetch_posts([{ type: "rss", url: "http://localhost:8000/err_empty_item.xml" }]);
     assertEquals(await posts_invalid_url    , []);
     assertEquals(await posts_timeout        , []);
     assertEquals(await posts_not_found      , []);
