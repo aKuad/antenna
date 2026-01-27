@@ -10,12 +10,7 @@ import { is_resource_exists, sleep, to_absolute_when_relative } from "../util.ts
 
 Deno.test(async function test_util(t) {
   /* Test HTTP server start */
-  const test_server = Deno.serve(request => {
-    if(request.headers.get("no-icon-test") === "true" && new URL(request.url).pathname === "/favicon.ico")
-      return new Response("Not Found", { status: 404, statusText: "Not Found" });
-
-    return serveDir(request, { fsRoot: "./test_data", urlRoot: "", quiet: true })
-  });
+  const test_server = Deno.serve(request => serveDir(request, { fsRoot: "./test_data/atom", urlRoot: "", quiet: true }));
 
 
   /**
@@ -26,7 +21,7 @@ Deno.test(async function test_util(t) {
    */
   await t.step(async function is_resource_exists_true() {
     assert     (await is_resource_exists("http://localhost:8000/favicon.ico"));
-    assertFalse(await is_resource_exists("http://localhost:8000/favicon.ico", { "no-icon-test": "true" }));
+    assertFalse(await is_resource_exists("http://localhost:8000/non-exist-path"));
   });
 
 
