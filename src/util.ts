@@ -39,7 +39,7 @@ export function sleep(duration_ms: number): Promise<undefined> {
  * @param feed_uri URI origin of `may_relative_url`
  * @returns Absolute URI
  */
-export function to_absolute_when_relative(may_relative_uri: string, feed_uri: string): string {
+export function to_full_url_when_not(may_relative_uri: string, feed_uri: string): string {
   try {
     // When `Invalid URL` not thrown, it was absolute URL
     new URL(may_relative_uri);

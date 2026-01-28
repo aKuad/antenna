@@ -7,7 +7,7 @@ import { red, yellow } from "jsr:@std/fmt@1/colors";
 import { parse, xml_node } from "jsr:@libs/xml@7";
 
 import { Post } from "../types.ts";
-import { is_resource_exists, to_absolute_when_relative } from "../util.ts";
+import { is_resource_exists, to_full_url_when_not } from "../util.ts";
 
 
 /**
@@ -92,7 +92,7 @@ export async function fetch_rss(rss_url: string, headers?: HeadersInit, timeout_
 
   const root_image_node     = <xml_node | undefined>channel["~children"].find(node => node["~name"] === "image");
   const root_image_url_node = root_image_node ? <xml_node | undefined>root_image_node["~children"].find(node => node["~name"] === "url") : undefined;
-  const root_image_url_str  = root_image_url_node ? to_absolute_when_relative(root_image_url_node["#text"], rss_url) : undefined;
+  const root_image_url_str  = root_image_url_node ? to_full_url_when_not(root_image_url_node["#text"], rss_url) : undefined;
 
 
   // Other core data
