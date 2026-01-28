@@ -5,7 +5,7 @@
 import { serveDir } from "jsr:@std/http@1";
 import { assertEquals, assert, assertFalse } from "jsr:@std/assert@1";
 
-import { is_resource_exists, sleep, to_absolute_when_relative } from "../util.ts";
+import { is_resource_exists, sleep, to_full_url_when_not } from "../util.ts";
 
 
 Deno.test(async function test_util(t) {
@@ -39,9 +39,9 @@ Deno.test(async function test_util(t) {
    *
    * Note: No error cases of this test
    */
-  await t.step(function to_absolute_when_relative_true() {
-    const input_path_only_actual = to_absolute_when_relative("/path-only-input"                    , "http://localhost:8000/any-path");
-    const input_full_url_actual  = to_absolute_when_relative("http://localhost:8000/full-url-input", "http://localhost:8000/any-path");
+  await t.step(function to_full_url_when_not_true() {
+    const input_path_only_actual = to_full_url_when_not("/path-only-input"                    , "http://localhost:8000/any-path");
+    const input_full_url_actual  = to_full_url_when_not("http://localhost:8000/full-url-input", "http://localhost:8000/any-path");
 
     assertEquals(input_path_only_actual, "http://localhost:8000/path-only-input");
     assertEquals(input_full_url_actual , "http://localhost:8000/full-url-input");
