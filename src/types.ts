@@ -30,3 +30,22 @@ export type Post = {
   readonly post_date?: Date
   readonly update_date: Date
 };
+
+
+/**
+ * Data structure of a fail reason
+ */
+export type FailReason = {
+  readonly target: Feed
+  readonly kind: "error" | "warning"
+  readonly reason: string
+}
+
+
+/**
+ * Gather of `Post[]` and `FailReason[]` for `fetch_posts()` return
+ */
+export type FetchResult = {
+  readonly posts: Post[]
+  readonly fail_reasons: FailReason[]
+}
