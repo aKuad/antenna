@@ -38,7 +38,7 @@ export type Post = {
 export type FailReason = {
   readonly target: Feed
   readonly severity: "error" | "warning"
-  readonly category: "HTTPError" | "ParseError" | "DataMissing"
+  readonly category: "FetchParamError" | "TimeoutError" | "HTTPError" | "ParseError" | "DataMissing"
   readonly detail: string
 }
 
