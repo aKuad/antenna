@@ -1,6 +1,6 @@
 /**
  * RSS feed fetching
- * @author aKuad
+ * @module
  */
 
 import { red, yellow } from "jsr:@std/fmt@1/colors";
