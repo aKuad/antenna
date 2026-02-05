@@ -3,10 +3,9 @@
  * @module
  */
 
-import { red, yellow } from "jsr:@std/fmt@1/colors";
 import { parse, xml_node } from "jsr:@libs/xml@7";
 
-import { Feed, Post } from "../types.ts";
+import { Feed, FetchResult } from "../types.ts";
 import { is_resource_exists, to_full_url_when_not } from "../util.ts";
 
 
@@ -17,32 +16,45 @@ import { is_resource_exists, to_full_url_when_not } from "../util.ts";
  * @param general_timeout_ms Limit duration of fetching in milliseconds
  * @returns Extracted posts
  */
-export async function fetch_atom(target: Feed, general_timeout_ms?: number): Promise<Post[]> {
+export async function fetch_atom(target: Feed, general_timeout_ms?: number): Promise<FetchResult> {
   // Try to fetch
   const timeout_ms = target.timeout_ms || general_timeout_ms;
   const signal = timeout_ms ? AbortSignal.timeout(timeout_ms) : undefined;
-  const res = await fetch(target.url, { headers: target.headers, signal }).catch(err => {
-    console.error(red(`Fetch from Atom ${target.url} - Failed to fetch cause: ${err}`));
-  });
-  if(!res)
-    return[];
+  const res = await fetch(target.url, { headers: target.headers, signal }).catch((err: Error) => err);
+
+  if(res instanceof Error) {
+    const is_timeout_error = res.name === "TimeoutError";
+    return {
+      posts: [],
+      fail_reasons: [{
+        target, severity: "error",
+        category: is_timeout_error ? "TimeoutError" : "FetchParamError",
+        detail: is_timeout_error ? "Request timeout" : `${res}`
+      }]
+    };
+  }
   if(!res.ok) {
-    console.error(red(`Fetch from Atom ${target.url} - HTTP error respond: ${res.statusText}`));
     await res.bytes();
-    return [];
+    return {
+      posts: [],
+      fail_reasons: [{ target, severity: "error", category: "HTTPError", detail: `${res.statusText}` }]
+    };
   }
 
 
   // XML root element extraction
-  const xml = await res.text().then(text => parse(text)).catch(err => {
-    console.error(red(`Fetch from Atom ${target.url} - Failed to parse XML cause: ${err}`));
-  });
-  if(!xml)
-    return [];
+  const xml = await res.text().then(text => parse(text)).catch((err: Error) => err);
+  if(xml instanceof Error)
+    return {
+      posts: [],
+      fail_reasons: [{ target, severity: "error", category: "ParseError", detail: `${xml}` }]
+    };
   const feed = <xml_node | undefined>xml["~children"].find(e => e["~name"] === "feed");
   if(!feed) {
-    console.error(red(`Fetch from Atom ${target.url} - <feed> tag not found`));
-    return [];
+    return {
+      posts: [],
+      fail_reasons: [{ target, severity: "error", category: "DataMissing", detail: "<feed> tag required, but not found" }]
+    };
   }
 
 
@@ -78,24 +90,31 @@ export async function fetch_atom(target: Feed, general_timeout_ms?: number): Pro
   // <entry> elements extraction
   const entries = <xml_node[]>(<xml_node>feed)["~children"].filter(node => node["~name"] === "entry");
   if(entries.length === 0) {
-    console.warn(yellow(`Fetch from Atom ${target.url} - No <entry> tags found`));
-    return [];
+    return {
+      posts: [],
+      fail_reasons: [{ target, severity: "warning", category: "DataMissing", detail: "No <entry> tags found, no posts fetched" }]
+    };
   }
 
 
   // <entry> contents extraction
-  const posts = entries.map((entry): Post | undefined => {
+  const fetch_result: FetchResult = { posts: [], fail_reasons: [] };
+  entries.forEach((entry, index) => {
     // Required elements
     const title_node = entry?.["~children"].find(node => node["~name"] === "title");
     if(!title_node) {
-      console.error(red(`Fetch from Atom ${target.url} - <title> tag required in a <entry>, but not found`));
+      fetch_result.fail_reasons.push({
+        target, severity: "error", category: "DataMissing", detail: `At an <entry> tag index ${index}, <title> tag required, but not found`
+      });
       return;
     }
     const title_str = title_node["#text"];
 
     const updated_node = entry?.["~children"].find(node => node["~name"] === "updated");
     if(!updated_node) {
-      console.error(red(`Fetch from Atom ${target.url} - <updated> tag required in a <entry>, but not found`));
+      fetch_result.fail_reasons.push({
+        target, severity: "error", category: "DataMissing", detail: `At an <entry> tag index ${index}, <updated> tag required, but not found`
+      });
       return;
     }
     const updated_date = new Date(updated_node["#text"]);
@@ -121,7 +140,7 @@ export async function fetch_atom(target: Feed, general_timeout_ms?: number): Pro
     const published_node = <xml_node | undefined>entry?.["~children"].find(node => node["~name"] === "published");
     const published_date = published_node ? new Date(published_node["#text"]) : undefined;
 
-    return {
+    fetch_result.posts.push({
       site_name: site_name,
       site_icon_url: root_icon_str || site_icon_url,
       title: title_str,
@@ -133,8 +152,8 @@ export async function fetch_atom(target: Feed, general_timeout_ms?: number): Pro
       thumbnail_url: root_logo_str,
       post_date: published_date,
       update_date: updated_date
-    };
+    });
   });
 
-  return posts.filter(e => e !== undefined);
+  return fetch_result;
 }
