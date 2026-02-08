@@ -135,23 +135,16 @@ export async function fetch_rss(target: Feed, general_timeout_ms?: number): Prom
   const fetch_result: FetchResult = { posts: [], fail_reasons: [] };
   items.forEach((entry, index) => {
     // Required elements
-    const title_node = entry?.["~children"].find(node => node["~name"] === "title");
-    if(!title_node) {
-      fetch_result.fail_reasons.push({
-        target, severity: "error", category: "DataMissing", detail: `At an <item> tag index ${index}, <title> tag required, but not found`
-      });
-      return;
-    }
-    const title_str = title_node ? title_node["#text"] : undefined;
-
+    const title_node       = entry?.["~children"].find(node => node["~name"] === "title");
     const description_node = entry?.["~children"].find(node => node["~name"] === "description");
-    if(!title_node) {
+    const title_str        = title_node       ? title_node["#text"]       : undefined;
+    const description_str  = description_node ? description_node["#text"] : undefined;
+    if(!title_node && !description_node) {
       fetch_result.fail_reasons.push({
-        target, severity: "error", category: "DataMissing", detail: `At an <item> tag index ${index}, <description> tag required, but not found`
+        target, severity: "error", category: "DataMissing", detail: `At an <item> tag index ${index}, <title> or <description> tag required, but not found`
       });
       return;
     }
-    const description_str  = description_node ? description_node["#text"] : undefined;
 
     const link_node = entry?.["~children"].find(node => node["~name"] === "link");
     const link_str  = link_node ? link_node["#text"] : undefined;
