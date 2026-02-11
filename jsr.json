@@ -1,7 +1,7 @@
 {
   "name": "@akuad/antenna",
   "version": "0.1.1",
-  "license": "CC0",
+  "license": "CC0-1.0",
   "exports": "./src/mod.ts",
   "publish": {
     "include": [
