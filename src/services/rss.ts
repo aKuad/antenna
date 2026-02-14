@@ -1,74 +1,94 @@
 /**
  * RSS feed fetching
- * @author aKuad
+ * @module
  */
 
-import { red, yellow } from "jsr:@std/fmt@1/colors";
 import { parse, xml_node } from "jsr:@libs/xml@7";
 
-import { Post } from "../types.ts";
+import { Feed, FetchResult } from "../types.ts";
 import { is_resource_exists, to_full_url_when_not } from "../util.ts";
 
 
 /**
  * RSS feed fetching
  *
- * @param rss_url URL of RSS XML
- * @param headers Headers of HTTP fetching
- * @param timeout_ms Limit duration of fetching in milliseconds
+ * @param target Target RSS feed to fetch
+ * @param general_timeout_ms Limit duration of fetching in milliseconds
  * @returns Extracted posts
  */
-export async function fetch_rss(rss_url: string, headers?: HeadersInit, timeout_ms?: number): Promise<Post[]> {
+export async function fetch_rss(target: Feed, general_timeout_ms?: number): Promise<FetchResult> {
   // Try to fetch
+  const timeout_ms = target.timeout_ms || general_timeout_ms;
   const signal = timeout_ms ? AbortSignal.timeout(timeout_ms) : undefined;
-  const res = await fetch(rss_url, { headers, signal }).catch(err => {
-    console.error(red(`Fetch from RSS ${rss_url} - Failed to fetch cause: ${err}`));
-  });
-  if(!res)
-    return[];
+  const res = await fetch(target.url, { headers: target.headers, signal }).catch((err: TypeError | DOMException) => err);
+
+  if(res instanceof Error) {
+    const is_timeout_error = res.name === "TimeoutError";
+    return {
+      posts: [],
+      fail_reasons: [{
+        target, severity: "error",
+        category: is_timeout_error ? "TimeoutError" : "FetchParamError",
+        detail: is_timeout_error ? "Request timeout" : `${res}`
+      }]
+    };
+  }
   if(!res.ok) {
-    console.error(red(`Fetch from RSS ${rss_url} - HTTP error respond: ${res.statusText}`));
     await res.bytes();
-    return [];
+    return {
+      posts: [],
+      fail_reasons: [{ target, severity: "error", category: "HTTPError", detail: `${res.statusText}` }]
+    };
   }
 
 
   // XML root element extraction
-  const xml = await res.text().then(text => parse(text)).catch(err => {
-    console.error(red(`Fetch from RSS ${rss_url} - Failed to parse XML cause: ${err}`));
-  });
-  if(!xml)
-    return [];
+  const xml = await res.text().then(text => parse(text)).catch((err: Error) => err);
+  if(xml instanceof Error)
+    return {
+      posts: [],
+      fail_reasons: [{ target, severity: "error", category: "ParseError", detail: `${xml}` }]
+    };
   const rss = <xml_node | undefined>xml["~children"].find(node => node["~name"] === "rss");
   if(!rss) {
-    console.error(red(`Fetch from RSS ${rss_url} - <rss> tag not found`));
-    return [];
+    return {
+      posts: [],
+      fail_reasons: [{ target, severity: "error", category: "DataMissing", detail: "<rss> tag required, but not found" }]
+    };
   }
   const channel = <xml_node | undefined>rss["~children"].find(node => node["~name"] === "channel");
   if(!channel) {
-    console.error(red(`Fetch from RSS ${rss_url} - <channel> tag not found`));
-    return [];
+    return {
+      posts: [],
+      fail_reasons: [{ target, severity: "error", category: "DataMissing", detail: "<channel> tag required, but not found" }]
+    };
   }
 
   // <channel> required contents extraction
   const root_title_node = <xml_node | undefined>channel["~children"].find(node => node["~name"] === "title");
   if(!root_title_node) {
-    console.error(red(`Fetch from RSS ${rss_url} - <title> tag not found in <channel>`));
-    return [];
+    return {
+      posts: [],
+      fail_reasons: [{ target, severity: "error", category: "DataMissing", detail: "At <channel> tag, <title> tag required, but not found" }]
+    };
   }
   const root_title_str  = root_title_node["#text"];
 
   const root_link_node = <xml_node | undefined>channel["~children"].find(node => node["~name"] === "link");
   if(!root_link_node) {
-    console.error(red(`Fetch from RSS ${rss_url} - <link> tag not found in <channel>`));
-    return [];
+    return {
+      posts: [],
+      fail_reasons: [{ target, severity: "error", category: "DataMissing", detail: "At <channel> tag, <link> tag required, but not found" }]
+    };
   }
   const root_link_str  = root_link_node["#text"];
 
   const root_description_node = <xml_node | undefined>channel["~children"].find(node => node["~name"] === "description");
   if(!root_description_node) {
-    console.error(red(`Fetch from RSS ${rss_url} - <description> tag not found in <channel>`));
-    return [];
+    return {
+      posts: [],
+      fail_reasons: [{ target, severity: "error", category: "DataMissing", detail: "At <channel> tag, <description> tag required, but not found" }]
+    };
   }
   const root_description_str  = root_description_node["#text"];
 
@@ -92,32 +112,37 @@ export async function fetch_rss(rss_url: string, headers?: HeadersInit, timeout_
 
   const root_image_node     = <xml_node | undefined>channel["~children"].find(node => node["~name"] === "image");
   const root_image_url_node = root_image_node ? <xml_node | undefined>root_image_node["~children"].find(node => node["~name"] === "url") : undefined;
-  const root_image_url_str  = root_image_url_node ? to_full_url_when_not(root_image_url_node["#text"], rss_url) : undefined;
+  const root_image_url_str  = root_image_url_node ? to_full_url_when_not(root_image_url_node["#text"], target.url) : undefined;
 
 
   // Other core data
-  const site_name     = new URL(rss_url).hostname;
-  const site_origin   = new URL(rss_url).origin;
-  const site_icon_uri = await is_resource_exists(site_origin + "/favicon.ico", headers) ? (site_origin + "/favicon.ico") : undefined;
+  const site_name     = new URL(target.url).hostname;
+  const site_origin   = new URL(target.url).origin;
+  const site_icon_uri = await is_resource_exists(site_origin + "/favicon.ico", target.headers) ? (site_origin + "/favicon.ico") : undefined;
 
 
   // <item> elements extraction
   const items = <xml_node[]>(<xml_node>channel)["~children"].filter(node => node["~name"] === "item");
   if(items.length === 0) {
-    console.warn(yellow(`Fetch from RSS ${rss_url} - No <item> tags found`));
-    return [];
+    return {
+      posts: [],
+      fail_reasons: [{ target, severity: "warning", category: "DataMissing", detail: "No <item> tags found, no posts fetched" }]
+    };
   }
 
 
-  // <entry> contents extraction
-  const posts = items.map((entry): Post | undefined => {
+  // <item> contents extraction
+  const fetch_result: FetchResult = { posts: [], fail_reasons: [] };
+  items.forEach((entry, index) => {
     // Required elements
     const title_node       = entry?.["~children"].find(node => node["~name"] === "title");
     const description_node = entry?.["~children"].find(node => node["~name"] === "description");
     const title_str        = title_node       ? title_node["#text"]       : undefined;
     const description_str  = description_node ? description_node["#text"] : undefined;
     if(!title_node && !description_node) {
-      console.error(red(`Fetch from RSS ${rss_url} - Least one of <title> or <description> tag required, but not found`));
+      fetch_result.fail_reasons.push({
+        target, severity: "error", category: "DataMissing", detail: `At an <item> tag index ${index}, <title> or <description> tag required, but not found`
+      });
       return;
     }
 
@@ -136,7 +161,7 @@ export async function fetch_rss(rss_url: string, headers?: HeadersInit, timeout_
     const pub_date_node = <xml_node | undefined>entry?.["~children"].find(node => node["~name"] === "pubDate");
     const pub_date_date = pub_date_node ? new Date(pub_date_node["#text"]) : undefined;
 
-    return {
+    fetch_result.posts.push({
       site_name: site_name,
       site_icon_url: site_icon_uri,
       title: title_str || root_title_str,
@@ -148,10 +173,10 @@ export async function fetch_rss(rss_url: string, headers?: HeadersInit, timeout_
       thumbnail_url: enclosure_img_url || root_image_url_str,
       post_date: pub_date_date || root_pub_date_date,
       update_date: pub_date_date || root_pub_date_date || new Date()
-    };
+    });
   });
 
-  return posts.filter(e => e !== undefined);
+  return fetch_result;
 }
 
 

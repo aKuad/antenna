@@ -6,18 +6,21 @@ Posts update collector library
 
 ## Usage
 
-```js
-import { fetch_posts } from "jsr:@akuad/antenna@0";
+```ts
+import { fetch_posts } from "jsr:@akuad/antenna@1";
 
-const posts = await fetch_posts([
+const fetch_result = await fetch_posts([
   { type: "atom", url: "https://github.com/akuad", headers: { "accept": "application/atom+xml" }, timeout_ms: 20000 },
   { type: "rss" , url: "https://openai.com/news/rss.xml" }
 ], 10000);
 
-console.log(posts);
+console.log(fetch_result.posts);
+
+// To see failed fetching
+console.log(fetch_result.fail_reasons);
 ```
 
-Output example:
+Output example of `.posts`:
 
 ```ts
 [
