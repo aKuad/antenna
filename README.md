@@ -75,6 +75,24 @@ Timeout also can be specified at `fetch_posts([targets], timeout_ms)`. When both
 - [RSS feed](https://www.rssboard.org/rss-specification)
   - `{ type: "rss", url: string }`
 
+## Migration from v0.x.x to v1.x.x
+
+Return structure of `fetch_posts()` modified. Put `.posts` to get same result (post data).
+
+v0.x.x:
+
+```ts
+const posts = await fetch_posts([ /* ... */ ]);
+console.log(posts);
+```
+
+v1.x.x:
+
+```ts
+const fetch_result = await fetch_posts([ /* ... */ ]);
+console.log(fetch_result.posts);
+```
+
 ## Using libraries
 
 [@libs/xml](https://jsr.io/@libs/xml) - Copyright (c) 2024 Simon Lecoq
