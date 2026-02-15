@@ -57,9 +57,7 @@ Output example of `.posts`:
 ]
 ```
 
-## Options ans supported services
-
-### General options
+## General options
 
 - `headers?: HeadersInit`
   - Additional HTTP headers on data fetch
@@ -68,7 +66,7 @@ Output example of `.posts`:
 
 Timeout also can be specified at `fetch_posts([targets], timeout_ms)`. When both are specified, individual specified value will be accepted.
 
-### Services
+## Supported services
 
 - [Atom feed](https://www.rfc-editor.org/rfc/rfc4287)
   - `{ type: "atom", url: string }`
