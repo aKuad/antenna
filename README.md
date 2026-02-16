@@ -6,18 +6,21 @@ Posts update collector library
 
 ## Usage
 
-```js
-import { fetch_posts } from "jsr:@akuad/antenna@0";
+```ts
+import { fetch_posts } from "jsr:@akuad/antenna@1";
 
-const posts = await fetch_posts([
+const fetch_result = await fetch_posts([
   { type: "atom", url: "https://github.com/akuad", headers: { "accept": "application/atom+xml" }, timeout_ms: 20000 },
   { type: "rss" , url: "https://openai.com/news/rss.xml" }
 ], 10000);
 
-console.log(posts);
+console.log(fetch_result.posts);
+
+// To see failed fetching
+console.log(fetch_result.fail_reasons);
 ```
 
-Output example:
+Output example of `.posts`:
 
 ```ts
 [
@@ -54,9 +57,7 @@ Output example:
 ]
 ```
 
-## Options ans supported services
-
-### General options
+## General options
 
 - `headers?: HeadersInit`
   - Additional HTTP headers on data fetch
@@ -65,12 +66,30 @@ Output example:
 
 Timeout also can be specified at `fetch_posts([targets], timeout_ms)`. When both are specified, individual specified value will be accepted.
 
-### Services
+## Supported services
 
 - [Atom feed](https://www.rfc-editor.org/rfc/rfc4287)
   - `{ type: "atom", url: string }`
 - [RSS feed](https://www.rssboard.org/rss-specification)
   - `{ type: "rss", url: string }`
+
+## Migration from v0.x.x to v1.x.x
+
+Return structure of `fetch_posts()` modified. Put `.posts` to get same result (post data).
+
+v0.x.x:
+
+```ts
+const posts = await fetch_posts([ /* ... */ ]);
+console.log(posts);
+```
+
+v1.x.x:
+
+```ts
+const fetch_result = await fetch_posts([ /* ... */ ]);
+console.log(fetch_result.posts);
+```
 
 ## Using libraries
 
