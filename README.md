@@ -99,4 +99,4 @@ console.log(fetch_result.posts);
 
 antenna - [CC0-1.0](./LICENSE)
 
-@libs/xml - [MIT license](https://github.com/lowlighter/libs/blob/main/LICENSE)
+@libs/xml - [MIT license](./LICENSE-libs-xml)
