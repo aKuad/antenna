@@ -5,7 +5,7 @@ on:
     tags: v*.*.**
 
 jobs:
-  deno-deploy:
+  jsr-publish:
     runs-on: ubuntu-latest
 
     permissions:
