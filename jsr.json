@@ -6,6 +6,7 @@
   "publish": {
     "include": [
       "LICENSE",
+      "LICENSE-libs-xml",
       "README.md",
       "src/"
     ],

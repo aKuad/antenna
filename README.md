@@ -97,6 +97,6 @@ console.log(fetch_result.posts);
 
 ## License
 
-antenna - [CC0-1.0](./LICENSE)
+antenna - [Creative Commons Zero v1.0](./LICENSE)
 
-@libs/xml - [MIT license](https://github.com/lowlighter/libs/blob/main/LICENSE)
+@libs/xml - [MIT License](./LICENSE-libs-xml)
