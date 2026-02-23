@@ -8,6 +8,7 @@
       "LICENSE",
       "LICENSE-libs-xml",
       "README.md",
+      "assets/logo.svg",
       "src/"
     ],
     "exclude": [

@@ -2,6 +2,8 @@
 
 [![JSR](https://jsr.io/badges/@akuad/antenna)](https://jsr.io/@akuad/antenna)
 
+![antenna logo](./assets/logo.svg)
+
 Posts update collector library
 
 ## Usage
