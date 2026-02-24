@@ -19,7 +19,7 @@ Deno.test(async function test_rss(t) {
 
     const response_delay_ms = request.headers.get("late-response-test");
     if(response_delay_ms)
-      await new Promise(resolve => setTimeout(resolve, Number(response_delay_ms)));
+      await sleep(Number(response_delay_ms));
 
     return serveDir(request, { fsRoot: "./test_data/rss", urlRoot: "", quiet: true })
   });
