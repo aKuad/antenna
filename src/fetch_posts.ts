@@ -3,7 +3,7 @@
  * @module
  */
 
-import { FailReason, Feed, FetchResult, Post } from "./types.ts";
+import { FeedTarget, FetchResult, Post, FailReason } from "./types.ts";
 import { fetch_atom } from "./services/atom.ts";
 import { fetch_rss } from "./services/rss.ts";
 
@@ -15,7 +15,7 @@ import { fetch_rss } from "./services/rss.ts";
  * @param general_timeout_ms Limit duration of all fetching in milliseconds (Individual option overwrites it when both are specified)
  * @returns Fetched posts
  */
-export async function fetch_posts(targets: Array<Feed>, general_timeout_ms?: number): Promise<FetchResult> {
+export async function fetch_posts(targets: Array<FeedTarget>, general_timeout_ms?: number): Promise<FetchResult> {
   const fetch_results_promises = targets.map(target => {
     switch(target.type) {
       case "atom":
