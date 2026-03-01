@@ -15,6 +15,23 @@ export type FeedTarget = {
 
 
 /**
+ * Explain a target of site
+ */
+export type SiteTarget = {
+  site: "qiita"
+  uid: string
+  headers?: HeadersInit
+  timeout_ms?: number
+};
+
+
+// deno-lint-ignore no-explicit-any
+export function isFeedTarget(obj: any): obj is FeedTarget {
+  return obj && typeof obj.type === "string" && typeof obj.url === "string";
+}
+
+
+/**
  * Data structure of a post
  */
 export type Post = {
