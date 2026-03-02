@@ -25,12 +25,6 @@ export type SiteTarget = {
 };
 
 
-// deno-lint-ignore no-explicit-any
-export function isFeedTarget(obj: any): obj is FeedTarget {
-  return obj && typeof obj.type === "string" && typeof obj.url === "string";
-}
-
-
 /**
  * Data structure of a post
  */
