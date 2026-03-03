@@ -47,11 +47,11 @@ export type Post = {
  * Data structure of a fail reason
  */
 export type FailReason = {
-  readonly target: FeedTarget
+  readonly target: FeedTarget | SiteTarget
   readonly severity: "error" | "warning"
   readonly category: "FetchParamError" | "TimeoutError" | "HTTPError" | "ParseError" | "DataMissing"
   readonly detail: string
-}
+};
 
 
 /**
@@ -60,4 +60,4 @@ export type FailReason = {
 export type FetchResult = {
   readonly posts: Post[]
   readonly fail_reasons: FailReason[]
-}
+};
