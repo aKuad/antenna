@@ -6,9 +6,20 @@
 /**
  * Explain a target of a feed
  */
-export type Feed = {
+export type FeedTarget = {
   type: "rss" | "atom"
   url: string
+  headers?: HeadersInit
+  timeout_ms?: number
+};
+
+
+/**
+ * Explain a target of site
+ */
+export type SiteTarget = {
+  site: "qiita"
+  uid: string
   headers?: HeadersInit
   timeout_ms?: number
 };
@@ -36,11 +47,11 @@ export type Post = {
  * Data structure of a fail reason
  */
 export type FailReason = {
-  readonly target: Feed
+  readonly target: FeedTarget | SiteTarget
   readonly severity: "error" | "warning"
   readonly category: "FetchParamError" | "TimeoutError" | "HTTPError" | "ParseError" | "DataMissing"
   readonly detail: string
-}
+};
 
 
 /**
@@ -49,4 +60,4 @@ export type FailReason = {
 export type FetchResult = {
   readonly posts: Post[]
   readonly fail_reasons: FailReason[]
-}
+};

@@ -8,7 +8,7 @@ import { assertEquals } from "jsr:@std/assert@1";
 import { sleep } from "../util.ts";
 
 import { fetch_posts } from "../fetch_posts.ts";
-import { Feed, FetchResult } from "../types.ts";
+import { FeedTarget, FetchResult } from "../types.ts";
 
 
 Deno.test(async function test_atom(t) {
@@ -127,14 +127,14 @@ Deno.test(async function test_atom(t) {
    * - When invalid file as atom fetched, returns empty array with error message logging
    */
   await t.step(async function atom_err() {
-    const invalid_url_target: Feed = { type: "atom", url: "non_url_string" };
-    const timeout_target    : Feed = { type: "atom", url: "http://localhost:8000/true_general.xml", timeout_ms: 100, headers: { "late-response-test": "500" } };
-    const not_found_target  : Feed = { type: "atom", url: "http://localhost:8000/non_existing_file" };
-    const non_xml_target    : Feed = { type: "atom", url: "http://localhost:8000/err_non_xml.xml" };
-    const no_feed_target    : Feed = { type: "atom", url: "http://localhost:8000/err_no_feed.xml" };
-    const no_entries_target : Feed = { type: "atom", url: "http://localhost:8000/err_no_entries.xml" };
-    const no_title_target   : Feed = { type: "atom", url: "http://localhost:8000/err_no_title.xml" };
-    const no_updated_target : Feed = { type: "atom", url: "http://localhost:8000/err_no_updated.xml" };
+    const invalid_url_target: FeedTarget = { type: "atom", url: "non_url_string" };
+    const timeout_target    : FeedTarget = { type: "atom", url: "http://localhost:8000/true_general.xml", timeout_ms: 100, headers: { "late-response-test": "500" } };
+    const not_found_target  : FeedTarget = { type: "atom", url: "http://localhost:8000/non_existing_file" };
+    const non_xml_target    : FeedTarget = { type: "atom", url: "http://localhost:8000/err_non_xml.xml" };
+    const no_feed_target    : FeedTarget = { type: "atom", url: "http://localhost:8000/err_no_feed.xml" };
+    const no_entries_target : FeedTarget = { type: "atom", url: "http://localhost:8000/err_no_entries.xml" };
+    const no_title_target   : FeedTarget = { type: "atom", url: "http://localhost:8000/err_no_title.xml" };
+    const no_updated_target : FeedTarget = { type: "atom", url: "http://localhost:8000/err_no_updated.xml" };
 
     const invalid_url_actual = fetch_posts([invalid_url_target]);
     const timeout_actual     = fetch_posts([timeout_target]);

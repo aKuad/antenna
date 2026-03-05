@@ -5,7 +5,7 @@
 
 import { parse, xml_node } from "jsr:@libs/xml@7";
 
-import { Feed, FetchResult } from "../types.ts";
+import { FeedTarget, FetchResult } from "../types.ts";
 import { is_resource_exists, to_full_url_when_not } from "../util.ts";
 
 
@@ -16,7 +16,7 @@ import { is_resource_exists, to_full_url_when_not } from "../util.ts";
  * @param general_timeout_ms Limit duration of fetching in milliseconds
  * @returns Extracted posts
  */
-export async function fetch_rss(target: Feed, general_timeout_ms?: number): Promise<FetchResult> {
+export async function fetch_rss(target: FeedTarget, general_timeout_ms?: number): Promise<FetchResult> {
   // Try to fetch
   const timeout_ms = target.timeout_ms || general_timeout_ms;
   const signal = timeout_ms ? AbortSignal.timeout(timeout_ms) : undefined;

@@ -3,7 +3,8 @@
  * @module
  */
 
-import { FailReason, Feed, FetchResult, Post } from "./types.ts";
+import { FeedTarget, SiteTarget, FetchResult, Post, FailReason } from "./types.ts";
+import { isFeedTarget } from "./util.ts";
 import { fetch_atom } from "./services/atom.ts";
 import { fetch_rss } from "./services/rss.ts";
 
@@ -15,20 +16,36 @@ import { fetch_rss } from "./services/rss.ts";
  * @param general_timeout_ms Limit duration of all fetching in milliseconds (Individual option overwrites it when both are specified)
  * @returns Fetched posts
  */
-export async function fetch_posts(targets: Array<Feed>, general_timeout_ms?: number): Promise<FetchResult> {
+export async function fetch_posts(targets: Array<FeedTarget | SiteTarget>, general_timeout_ms?: number): Promise<FetchResult> {
   const fetch_results_promises = targets.map(target => {
-    switch(target.type) {
-      case "atom":
-        return fetch_atom(target, general_timeout_ms);
+    if(isFeedTarget(target)) {
+      switch(target.type) {
+        case "atom":
+          return fetch_atom(target, general_timeout_ms);
 
-      case "rss":
-        return fetch_rss(target, general_timeout_ms);
+        case "rss":
+          return fetch_rss(target, general_timeout_ms);
 
-      default:
-        return Promise.resolve<FetchResult>({
-          posts: [],
-          fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported type - ${target.type}` }]
-        });
+        default:
+          return Promise.resolve<FetchResult>({
+            posts: [],
+            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported feed - ${target.type}` }]
+          });
+      }
+    } else {
+      switch(target.site) {
+        case "qiita":
+          return Promise.resolve<FetchResult>({
+            posts: [],
+            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported site - ${target.site}` }]
+          });
+
+        default:
+          return Promise.resolve<FetchResult>({
+            posts: [],
+            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported site - ${target.site}` }]
+          });
+      }
     }
   });
 
