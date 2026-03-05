@@ -29,7 +29,7 @@ export async function fetch_posts(targets: Array<FeedTarget | SiteTarget>, gener
         default:
           return Promise.resolve<FetchResult>({
             posts: [],
-            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported type - ${target.type}` }]
+            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported feed - ${target.type}` }]
           });
       }
     } else {
@@ -37,13 +37,13 @@ export async function fetch_posts(targets: Array<FeedTarget | SiteTarget>, gener
         case "qiita":
           return Promise.resolve<FetchResult>({
             posts: [],
-            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported type - ${target.site}` }]
+            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported site - ${target.site}` }]
           });
 
         default:
           return Promise.resolve<FetchResult>({
             posts: [],
-            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported type - ${target.site}` }]
+            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported site - ${target.site}` }]
           });
       }
     }
