@@ -154,8 +154,9 @@ Deno.test(async function test_rss(t) {
 
 
   /**
-   * - When invalid URL passed, returns empty array with error message logging
-   * - When invalid file as RSS fetched, returns empty array with error message logging
+   * - When invalid URL passed, returns "FetchParamError" fail reason
+   * - When response reached timeout duration, returns "TimeoutError" fail reason
+   * - When invalid file as RSS fetched, returns "HTTPError"/"ParseError"/"DataMissing" fail reason
    */
   await t.step(async function rss_err() {
     const invalid_url_target   : Feed = { type: "rss", url: "non_url_string" };
