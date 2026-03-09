@@ -14,9 +14,9 @@ Deno.test(async function test_fetch_posts(t) {
    */
   await t.step(async function fetch_posts_err() {
     // deno-lint-ignore no-explicit-any
-    const target_unsupported_feed: any = { type: "unsupported-feed-type", url: "http://localhost:8000/atom/true_general.xml"};
+    const target_unsupported_feed: any = { feed_type: "unsupported-feed-type", url: "http://localhost:8000/atom/true_general.xml"};
     // deno-lint-ignore no-explicit-any
-    const target_unsupported_site: any = { site: "unsupported-site-name", uid: "akuad" };
+    const target_unsupported_site: any = { site_name: "unsupported-site-name", uid: "akuad" };
 
     const fetch_feed_actual = await fetch_posts([target_unsupported_feed]);
     const fetch_site_actual = await fetch_posts([target_unsupported_site]);

@@ -7,7 +7,7 @@
  * Explain a target of a feed
  */
 export type FeedTarget = {
-  type: "rss" | "atom"
+  feed_type: "rss" | "atom"
   url: string
   headers?: HeadersInit
   timeout_ms?: number
@@ -18,7 +18,7 @@ export type FeedTarget = {
  * Explain a target of site
  */
 export type SiteTarget = {
-  site: "qiita"
+  site_name: "qiita"
   uid: string
   headers?: HeadersInit
   timeout_ms?: number

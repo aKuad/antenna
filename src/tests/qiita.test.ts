@@ -22,10 +22,10 @@ Deno.test(async function test_rss(t) {
     if(response_delay_ms)
       await sleep(Number(response_delay_ms));
 
-    if(url.searchParams.get("rate-limit-exceeded") === "true")
+    if(request.headers.get("rate-limit-exceeded-test") === "true")
       return await serveFile(request, "./test_data/qiita/err_rate_limit_exceeded.json");
 
-    if(url.searchParams.get("query") !== "user%2Auid")
+    if(url.searchParams.get("query") !== "user:uid")
       return serveFile(request, "./test_data/qiita/err_uid_non_exists.json");
 
     if(url.searchParams.get("page") === "2")

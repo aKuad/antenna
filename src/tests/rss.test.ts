@@ -29,12 +29,12 @@ Deno.test(async function test_rss(t) {
    * - Can fetch and return posts data from specified URL
    */
   await t.step(async function rss_true() {
-    const posts_general_actual   = await fetch_posts([{ type: "rss", url: "http://localhost:8000/true_general.xml" }]);
-    const posts_webMaster_actual = await fetch_posts([{ type: "rss", url: "http://localhost:8000/true_webMaster.xml" }]);
+    const posts_general_actual   = await fetch_posts([{ feed_type: "rss", url: "http://localhost:8000/true_general.xml" }]);
+    const posts_webMaster_actual = await fetch_posts([{ feed_type: "rss", url: "http://localhost:8000/true_webMaster.xml" }]);
     const date_at_webMaster_test = new Date();
-    const posts_copyright_actual = await fetch_posts([{ type: "rss", url: "http://localhost:8000/true_copyright.xml" }]);
+    const posts_copyright_actual = await fetch_posts([{ feed_type: "rss", url: "http://localhost:8000/true_copyright.xml" }]);
     const date_at_copyright_test = new Date();
-    const posts_minimum_actual   = await fetch_posts([{ type: "rss", url: "http://localhost:8000/true_minimum.xml", headers: { "no-icon-test": "true" } }]);
+    const posts_minimum_actual   = await fetch_posts([{ feed_type: "rss", url: "http://localhost:8000/true_minimum.xml", headers: { "no-icon-test": "true" } }]);
     const date_at_minimum_test   = new Date();
 
     const posts_general_expected: FetchResult = {
@@ -158,17 +158,17 @@ Deno.test(async function test_rss(t) {
    * - When invalid file as RSS fetched, returns empty array with error message logging
    */
   await t.step(async function rss_err() {
-    const invalid_url_target   : FeedTarget = { type: "rss", url: "non_url_string" };
-    const timeout_target       : FeedTarget = { type: "rss", url: "http://localhost:8000/true_general.xml", timeout_ms: 100, headers: { "late-response-test": "500" } };
-    const not_found_target     : FeedTarget = { type: "rss", url: "http://localhost:8000/non_existing_file" };
-    const non_xml_target       : FeedTarget = { type: "rss", url: "http://localhost:8000/err_non_xml.xml" };
-    const no_rss_target        : FeedTarget = { type: "rss", url: "http://localhost:8000/err_no_rss.xml" };
-    const no_channel_target    : FeedTarget = { type: "rss", url: "http://localhost:8000/err_no_channel.xml" };
-    const no_title_target      : FeedTarget = { type: "rss", url: "http://localhost:8000/err_no_title.xml" };
-    const no_link_target       : FeedTarget = { type: "rss", url: "http://localhost:8000/err_no_link.xml" };
-    const no_description_target: FeedTarget = { type: "rss", url: "http://localhost:8000/err_no_description.xml" };
-    const no_items_target      : FeedTarget = { type: "rss", url: "http://localhost:8000/err_no_items.xml" };
-    const empty_item_target    : FeedTarget = { type: "rss", url: "http://localhost:8000/err_empty_item.xml" };
+    const invalid_url_target   : FeedTarget = { feed_type: "rss", url: "non_url_string" };
+    const timeout_target       : FeedTarget = { feed_type: "rss", url: "http://localhost:8000/true_general.xml", timeout_ms: 100, headers: { "late-response-test": "500" } };
+    const not_found_target     : FeedTarget = { feed_type: "rss", url: "http://localhost:8000/non_existing_file" };
+    const non_xml_target       : FeedTarget = { feed_type: "rss", url: "http://localhost:8000/err_non_xml.xml" };
+    const no_rss_target        : FeedTarget = { feed_type: "rss", url: "http://localhost:8000/err_no_rss.xml" };
+    const no_channel_target    : FeedTarget = { feed_type: "rss", url: "http://localhost:8000/err_no_channel.xml" };
+    const no_title_target      : FeedTarget = { feed_type: "rss", url: "http://localhost:8000/err_no_title.xml" };
+    const no_link_target       : FeedTarget = { feed_type: "rss", url: "http://localhost:8000/err_no_link.xml" };
+    const no_description_target: FeedTarget = { feed_type: "rss", url: "http://localhost:8000/err_no_description.xml" };
+    const no_items_target      : FeedTarget = { feed_type: "rss", url: "http://localhost:8000/err_no_items.xml" };
+    const empty_item_target    : FeedTarget = { feed_type: "rss", url: "http://localhost:8000/err_empty_item.xml" };
 
     const invalid_url_actual    = fetch_posts([invalid_url_target]);
     const timeout_actual        = fetch_posts([timeout_target]);

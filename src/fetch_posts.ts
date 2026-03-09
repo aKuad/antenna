@@ -19,7 +19,7 @@ import { fetch_rss } from "./services/rss.ts";
 export async function fetch_posts(targets: Array<FeedTarget | SiteTarget>, general_timeout_ms?: number): Promise<FetchResult> {
   const fetch_results_promises = targets.map(target => {
     if(isFeedTarget(target)) {
-      switch(target.type) {
+      switch(target.feed_type) {
         case "atom":
           return fetch_atom(target, general_timeout_ms);
 
@@ -29,21 +29,21 @@ export async function fetch_posts(targets: Array<FeedTarget | SiteTarget>, gener
         default:
           return Promise.resolve<FetchResult>({
             posts: [],
-            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported feed - ${target.type}` }]
+            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported feed - ${target.feed_type}` }]
           });
       }
     } else {
-      switch(target.site) {
+      switch(target.site_name) {
         case "qiita":
           return Promise.resolve<FetchResult>({
             posts: [],
-            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported site - ${target.site}` }]
+            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported site - ${target.site_name}` }]
           });
 
         default:
           return Promise.resolve<FetchResult>({
             posts: [],
-            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported site - ${target.site}` }]
+            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported site - ${target.site_name}` }]
           });
       }
     }
