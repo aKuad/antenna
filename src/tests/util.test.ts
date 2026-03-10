@@ -5,7 +5,7 @@
 import { serveDir } from "jsr:@std/http@1";
 import { assertEquals, assert, assertFalse } from "jsr:@std/assert@1";
 
-import { is_resource_exists, sleep, to_full_url_when_not } from "../util.ts";
+import { is_resource_exists, isFeedTarget, sleep, to_full_url_when_not } from "../util.ts";
 
 
 Deno.test(async function test_util(t) {
@@ -22,6 +22,18 @@ Deno.test(async function test_util(t) {
   await t.step(async function is_resource_exists_true() {
     assert     (await is_resource_exists("http://localhost:8000/favicon.ico"));
     assertFalse(await is_resource_exists("http://localhost:8000/non-exist-path"));
+  });
+
+
+  /**
+   * - Can return true for `FeedTarget` type
+   * - Can return false for non `FeedTarget` type
+   *
+   * Note: No error cases of this test
+   */
+  await t.step(function isFeedTarget_true() {
+    assert     (isFeedTarget({ feed_type: "atom", url: "http://localhost:8000/atom/true_general.xml" }));
+    assertFalse(isFeedTarget({ site_name: "qiita", uid: "uid" }));
   });
 
 
