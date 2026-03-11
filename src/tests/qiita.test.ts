@@ -25,13 +25,16 @@ Deno.test(async function test_rss(t) {
     if(request.headers.get("rate-limit-exceeded-test") === "true")
       return await serveFile(request, "./test_data/qiita/err_rate_limit_exceeded.json");
 
-    if(url.searchParams.get("query") !== "user:uid")
-      return serveFile(request, "./test_data/qiita/err_uid_non_exists.json");
+    if(url.searchParams.get("query") !== "user:uid") {
+      const res = await serveFile(request, "./test_data/qiita/err_uid_non_exists.json");
+      res.headers.append("total-count", "101");
+      return res;
+    }
 
-    if(url.searchParams.get("page") === "2")
-      return serveFile(request, "./test_data/qiita/true_items_page2.json");
-
-    return serveFile(request, "./test_data/qiita/true_items_page1.json");
+    const res_page = url.searchParams.get("page") === "2" ? "2" : "1";  // If no specified, select 1
+    const res = await serveFile(request, `./test_data/qiita/true_items_page${res_page}.json`);
+    res.headers.append("total-count", "101");
+    return res;
   });
 
 
