@@ -11,17 +11,17 @@ import { SiteTarget, FetchResult } from "../types.ts";
  *
  * @param user_id User ID of Qiita to fetch
  * @param general_timeout_ms Limit duration of fetching in milliseconds
- * @param connect_test_server Switch
+ * @param connect_test_server DO NOT SET TRUE EXCEPT FOR TEST - Switch api url to localhost
  * @returns Fetched posts and/or error info
  */
-export async function articles_fetch_qiita(target: SiteTarget, general_timeout_ms?: number, connect_test_server: boolean = false): Promise<FetchResult> {
-  //
+export async function fetch_qiita(target: SiteTarget, general_timeout_ms?: number, connect_test_server: boolean = false): Promise<FetchResult> {
+  // Variables and objects
   const timeout_ms = target.timeout_ms || general_timeout_ms;
   const signal = timeout_ms ? AbortSignal.timeout(timeout_ms) : undefined;
   const base_url = connect_test_server ? "http://localhost:8000" : "https://qiita.com/api/v2/items";
   const url = new URL(base_url);
   url.searchParams.append("per_page", "100");
-  url.searchParams.append("query", `user:${ target.uid }`);
+  url.searchParams.append("query", `user:${target.uid}`);
 
 
   // Fetching loop
