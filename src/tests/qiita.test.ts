@@ -25,6 +25,9 @@ Deno.test(async function test_rss(t) {
     if(request.headers.get("rate-limit-exceeded-test") === "true")
       return await serveFile(request, "./test_data/qiita/err_rate_limit_exceeded.json");
 
+    if(request.headers.get("500-error-test") === "true")
+      return new Response("", { status: 500 });
+
     if(url.searchParams.get("query") !== "user:uid") {
       const res = await serveFile(request, "./test_data/qiita/err_uid_non_exists.json");
       res.headers.append("total-count", "101");
