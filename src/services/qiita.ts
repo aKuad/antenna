@@ -97,5 +97,8 @@ export async function fetch_qiita(target: SiteTarget, general_timeout_ms?: numbe
     current_page++;
   }
 
+  if(fetch_result.posts.length === 0)
+    fetch_result.fail_reasons.push({ target, severity: "warning", category: "DataMissing", detail: "User ID non exist or no posted" });
+
   return fetch_result;
 }
