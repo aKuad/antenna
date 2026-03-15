@@ -3,12 +3,12 @@
  */
 
 import { serveFile } from "jsr:@std/http@1";
-// import { assertEquals } from "jsr:@std/assert@1";
+import { assertEquals } from "jsr:@std/assert@1";
 
 import { sleep } from "../util.ts";
 
-// import { fetch_posts } from "../fetch_posts.ts";
-// import { FetchResult } from "../types.ts";
+import { fetch_posts } from "../fetch_posts.ts";
+import { SiteTarget, FetchResult } from "../types.ts";
 
 
 Deno.test(async function test_rss(t) {
