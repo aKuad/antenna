@@ -12,8 +12,8 @@ Posts update collector library
 import { fetch_posts } from "jsr:@akuad/antenna@1";
 
 const fetch_result = await fetch_posts([
-  { type: "atom", url: "https://github.com/akuad", headers: { "accept": "application/atom+xml" }, timeout_ms: 20000 },
-  { type: "rss" , url: "https://openai.com/news/rss.xml" }
+  { feed_type: "atom", url: "https://github.com/akuad", headers: { "accept": "application/atom+xml" }, timeout_ms: 20000 },
+  { feed_type: "rss" , url: "https://openai.com/news/rss.xml" }
 ], 10000);
 
 console.log(fetch_result.posts);
