@@ -13,7 +13,7 @@ import { fetch_rss } from "./services/rss.ts";
  *
  * @param targets Targets to fetch posts
  * @param general_timeout_ms Limit duration of all fetching in milliseconds (Individual option overwrites it when both are specified)
- * @returns Fetched posts
+ * @returns Fetched posts and/or fail reasons
  */
 export async function fetch_posts(targets: Array<Feed>, general_timeout_ms?: number): Promise<FetchResult> {
   const fetch_results_promises = targets.map(target => {

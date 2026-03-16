@@ -10,7 +10,7 @@ import { fetch_posts } from "../fetch_posts.ts";
 
 Deno.test(async function test_fetch_posts(t) {
   /**
-   * - When unsupported target specified, returns empty array
+   * - When unsupported target specified, returns "FetchParamError" fail reason
    */
   await t.step(async function fetch_posts_err() {
     // deno-lint-ignore no-explicit-any
