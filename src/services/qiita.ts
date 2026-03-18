@@ -12,7 +12,7 @@ import { SiteTarget, FetchResult } from "../types.ts";
  * @param user_id User ID of Qiita to fetch
  * @param general_timeout_ms Limit duration of fetching in milliseconds
  * @param connect_test_server DO NOT SET TRUE EXCEPT FOR TEST - Switch api url to localhost
- * @returns Fetched posts and/or error info
+ * @returns Fetched posts and/or fail reason
  */
 export async function fetch_qiita(target: SiteTarget, general_timeout_ms?: number, connect_test_server: boolean = false): Promise<FetchResult> {
   // Variables and objects
