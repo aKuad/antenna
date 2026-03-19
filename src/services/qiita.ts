@@ -79,7 +79,7 @@ export async function fetch_qiita(target: SiteTarget, general_timeout_ms?: numbe
           title: article.title,
           url: article.url,
           author_name: article.user.id,
-          author_url: `https://qiita.com/${ article.user.id }`,
+          author_url: `https://qiita.com/${article.user.id}`,
           author_icon_url: article.user.profile_image_url,
           description: article.body.replaceAll('\n', ' ').slice(0, 100),
           thumbnail_url: "",
