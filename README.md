@@ -12,8 +12,8 @@ Posts update collector library
 import { fetch_posts } from "jsr:@akuad/antenna@1";
 
 const fetch_result = await fetch_posts([
-  { feed_type: "atom", url: "https://github.com/akuad", headers: { "accept": "application/atom+xml" }, timeout_ms: 20000 },
-  { feed_type: "rss" , url: "https://openai.com/news/rss.xml" }
+  { site_name: "qiita", uid: "aKuad" },
+  { feed_type: "atom" , url: "https://github.com/akuad", headers: { "accept": "application/atom+xml" }, timeout_ms: 20000 }
 ], 10000);
 
 console.log(fetch_result.posts);
@@ -28,23 +28,23 @@ Output example of `.posts`:
 [
   // ...
   {
-    site_name: "openai.com",
-    site_icon_url: "https://openai.com/favicon.ico",
-    title: "Introducing OpenAI Academy for News Organizations",
-    url: "https://openai.com/index/openai-academy-for-news-organizations",
-    author_name: "openai.com",
-    author_url: undefined,
-    author_icon_url: undefined,
-    description: "OpenAI is launching the OpenAI Academy for News Organizations, a new learning hub built with the American Journalism Project and The Lenfest Institute to help newsrooms use AI effectively. The Academy offers training, practical use cases, and responsible-use guidance to support journalists, editors, and publishers as they adopt AI in their reporting and operations.",
-    thumbnail_url: undefined,
-    post_date: 2025-12-17T06:00:00.000Z,
-    update_date: 2025-12-17T06:00:00.000Z
+    site_name: "Qiita",
+    site_icon_url: "https://qiita.com/favicon.ico",
+    title: "GitHub リポジトリの 'Deployments' に表示させるには？",
+    url: "https://qiita.com/aKuad/items/9d1cb399b2846f61648d",
+    author_name: "aKuad",
+    author_url: "https://qiita.com/aKuad",
+    author_icon_url: "https://avatars2.githubusercontent.com/u/53811809?v=4",
+    description: "## GitHub リポジトリの 'Deployments' って？  これのことです。  ![GitHub Repositoy - Deployments](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/540894/b6bf4b50-29af-4b68-be1a-18a27fb7d633.png)  :::note wa",
+    thumbnail_url: "",
+    post_date: 2026-02-13T12:25:53.000Z,
+    update_date: 2026-03-09T12:53:20.000Z
   },
   {
     site_name: "github.com",
     site_icon_url: "https://github.com/favicon.ico",
-    title: "aKuad pushed zenn-articles",
-    url: "https://github.com/aKuad/zenn-articles/compare/3df9544a8e...05f8f92f8d",
+    title: "aKuad pushed antenna",
+    url: "https://github.com/aKuad/antenna/compare/f9247fb0f5...075fb8a2a4",
     author_name: "aKuad",
     author_url: "https://github.com/aKuad",
     author_icon_url: undefined,
@@ -52,8 +52,8 @@ Output example of `.posts`:
       // Too long output here by github.com
       "</div></div>",
     thumbnail_url: undefined,
-    post_date: 2025-12-17T13:15:42.000Z,
-    update_date: 2025-12-17T13:15:42.000Z
+    post_date: 2026-03-09T13:14:16.000Z,
+    update_date: 2026-03-09T13:14:16.000Z
   },
   // ...
 ]
