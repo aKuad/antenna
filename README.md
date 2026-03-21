@@ -71,9 +71,11 @@ Timeout also can be specified at `fetch_posts([targets], timeout_ms)`. When both
 ## Supported services
 
 - [Atom feed](https://www.rfc-editor.org/rfc/rfc4287)
-  - `{ type: "atom", url: string }`
+  - `{ feed_type: "atom", url: string }`
+- [Qiita](https://qiita.com)
+  - `{ site_name: "qiita", uid: string }`
 - [RSS feed](https://www.rssboard.org/rss-specification)
-  - `{ type: "rss", url: string }`
+  - `{ feed_type: "rss", url: string }`
 
 ## Migration from v0.x.x to v1.x.x
 
