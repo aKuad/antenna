@@ -81,7 +81,7 @@ export async function fetch_qiita(target: SiteTarget, general_timeout_ms?: numbe
           author_name: article.user.id,
           author_url: `https://qiita.com/${article.user.id}`,
           author_icon_url: article.user.profile_image_url,
-          description: article.body.replaceAll('\n', ' ').replaceAll(/\n+/g, "\n").slice(0, 200), // First part of raw body as description
+          description: article.body.replaceAll(/\n+/g, "\n").replaceAll('\n', ' ').slice(0, 200), // First part of raw body as description
           thumbnail_url: "",
           post_date: new Date(article.created_at),
           update_date: new Date(article.updated_at)
