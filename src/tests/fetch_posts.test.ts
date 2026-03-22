@@ -10,7 +10,7 @@ import { fetch_posts } from "../fetch_posts.ts";
 
 Deno.test(async function test_fetch_posts(t) {
   /**
-   * - When unsupported feed-type/site-name specified, return 'FetchParamError'
+   * - When unsupported feed/site target specified, returns "FetchParamError" fail reason
    */
   await t.step(async function fetch_posts_err() {
     // deno-lint-ignore no-explicit-any

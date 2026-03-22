@@ -14,7 +14,7 @@ import { is_resource_exists, to_full_url_when_not } from "../util.ts";
  *
  * @param target Target RSS feed to fetch
  * @param general_timeout_ms Limit duration of fetching in milliseconds
- * @returns Extracted posts
+ * @returns Extracted posts or fail reason
  */
 export async function fetch_rss(target: FeedTarget, general_timeout_ms?: number): Promise<FetchResult> {
   // Try to fetch

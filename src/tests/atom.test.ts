@@ -123,8 +123,9 @@ Deno.test(async function test_atom(t) {
 
 
   /**
-   * - When invalid URL passed, returns empty array with error message logging
-   * - When invalid file as atom fetched, returns empty array with error message logging
+   * - When invalid URL passed, returns "FetchParamError" fail reason
+   * - When response reached timeout duration, returns "TimeoutError" fail reason
+   * - When invalid file as atom fetched, returns "HTTPError"/"ParseError"/"DataMissing" fail reason
    */
   await t.step(async function atom_err() {
     const invalid_url_target: FeedTarget = { feed_type: "atom", url: "non_url_string" };

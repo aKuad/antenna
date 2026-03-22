@@ -16,7 +16,7 @@ import { fetch_rss } from "./services/rss.ts";
  * @param targets Targets to fetch posts
  * @param general_timeout_ms Limit duration of all fetching in milliseconds (Individual option overwrites it when both are specified)
  * @param connect_test_server DO NOT SET TRUE EXCEPT FOR TEST - Switch api url to localhost
- * @returns Fetched posts
+ * @returns Fetched posts and/or fail reasons
  */
 export async function fetch_posts(targets: Array<FeedTarget | SiteTarget>, general_timeout_ms?: number, connect_test_server: boolean = false): Promise<FetchResult> {
   const fetch_results_promises = targets.map(target => {
