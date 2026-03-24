@@ -74,6 +74,7 @@ Timeout also can be specified at `fetch_posts([targets], timeout_ms)`. When both
   - `{ feed_type: "atom", url: string }`
 - [Qiita](https://qiita.com)
   - `{ site_name: "qiita", uid: string }`
+  - ⚠️ This API has rate limitation - 60 requests/hour
 - [RSS feed](https://www.rssboard.org/rss-specification)
   - `{ feed_type: "rss", url: string }`
 

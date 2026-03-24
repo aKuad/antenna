@@ -1,5 +1,8 @@
 /**
  * Qiita article fetching
+ *
+ * Note: Qiita API has rate limitation - 60 requests/hour
+ *
  * @module
  */
 
