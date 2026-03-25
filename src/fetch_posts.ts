@@ -3,8 +3,10 @@
  * @module
  */
 
-import { FailReason, Feed, FetchResult, Post } from "./types.ts";
+import { FeedTarget, SiteTarget, FetchResult, Post, FailReason } from "./types.ts";
+import { isFeedTarget } from "./util.ts";
 import { fetch_atom } from "./services/atom.ts";
+import { fetch_qiita } from "./services/qiita.ts";
 import { fetch_rss } from "./services/rss.ts";
 
 
@@ -13,22 +15,36 @@ import { fetch_rss } from "./services/rss.ts";
  *
  * @param targets Targets to fetch posts
  * @param general_timeout_ms Limit duration of all fetching in milliseconds (Individual option overwrites it when both are specified)
+ * @param connect_test_server DO NOT SET TRUE EXCEPT FOR TEST - Switch api url to localhost
  * @returns Fetched posts and/or fail reasons
  */
-export async function fetch_posts(targets: Array<Feed>, general_timeout_ms?: number): Promise<FetchResult> {
+export async function fetch_posts(targets: Array<FeedTarget | SiteTarget>, general_timeout_ms?: number, connect_test_server: boolean = false): Promise<FetchResult> {
   const fetch_results_promises = targets.map(target => {
-    switch(target.type) {
-      case "atom":
-        return fetch_atom(target, general_timeout_ms);
+    if(isFeedTarget(target)) {
+      switch(target.feed_type) {
+        case "atom":
+          return fetch_atom(target, general_timeout_ms);
 
-      case "rss":
-        return fetch_rss(target, general_timeout_ms);
+        case "rss":
+          return fetch_rss(target, general_timeout_ms);
 
-      default:
-        return Promise.resolve<FetchResult>({
-          posts: [],
-          fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported type - ${target.type}` }]
-        });
+        default:
+          return Promise.resolve<FetchResult>({
+            posts: [],
+            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported feed - ${target.feed_type}` }]
+          });
+      }
+    } else {
+      switch(target.site_name) {
+        case "qiita":
+          return fetch_qiita(target, general_timeout_ms, connect_test_server);
+
+        default:
+          return Promise.resolve<FetchResult>({
+            posts: [],
+            fail_reasons: [{ target, severity: "error", category: "FetchParamError", detail: `Unsupported site - ${target.site_name}` }]
+          });
+      }
     }
   });
 
