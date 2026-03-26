@@ -9,7 +9,7 @@ Posts update collector library
 ## Usage
 
 ```ts
-import { fetch_posts } from "jsr:@akuad/antenna@1";
+import { fetch_posts } from "jsr:@akuad/antenna@2";
 
 const fetch_result = await fetch_posts([
   { site_name: "qiita", uid: "aKuad" },
