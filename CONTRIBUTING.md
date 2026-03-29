@@ -10,11 +10,12 @@ Main purpose is organizing and reminding conventions for me ([aKuad](https://git
 
 Follow this workflow:
 
-1. Create an issue (what describe required work)
-2. Create a branch and start working on it
-3. Sometimes push the working branch
-4. Create a pull request for the working branch merge to `main`
-5. Confirm the pull request
+1. Create an issue (what describes required work)
+2. (If you not a owner) fork this repository, and work at the forked repository
+3. Create a branch and checkout, then start working
+4. Sometimes push the working branch
+5. Create a pull request for the working branch merge to `main`
+6. aKuad will check and confirm the pull request
 
 Prohibited:
 
