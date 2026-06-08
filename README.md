@@ -78,6 +78,10 @@ Timeout also can be specified at `fetch_posts([targets], timeout_ms)`. When both
 - [RSS feed](https://www.rssboard.org/rss-specification)
   - `{ feed_type: "rss", url: string }`
 
+## Migration from v1.x.x to v2.x.x
+
+*Nothing to do. It's compatible. Just only set the version `@akuad/antenna@2`.*
+
 ## Migration from v0.x.x to v1.x.x
 
 Return structure of `fetch_posts()` modified. Put `.posts` to get same result (post data).
