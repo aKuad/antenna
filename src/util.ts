@@ -40,7 +40,7 @@ export function isFeedTarget(obj: any): obj is FeedTarget {
  *
  * @param duration_ms Sleep duration in milliseconds
  */
-export function sleep(duration_ms: number): Promise<undefined> {
+export function sleep(duration_ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, duration_ms));
 }
 
