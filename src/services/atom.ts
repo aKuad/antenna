@@ -6,7 +6,7 @@
 import { parse, xml_node } from "jsr:@libs/xml@7";
 
 import { FeedTarget, FetchResult } from "../types.ts";
-import { is_resource_exists, to_full_url_when_not } from "../util.ts";
+import { is_resource_exists } from "../util.ts";
 
 
 /**
@@ -66,16 +66,18 @@ export async function fetch_atom(target: FeedTarget, general_timeout_ms?: number
   const root_author_name_str   = root_author_name_node  ? root_author_name_node["#text"]  : undefined;
   const root_author_email_str  = root_author_email_node ? root_author_email_node["#text"] : undefined;
   const root_author_email_uri  = root_author_email_str  ? ("mailto:" + root_author_email_str) : undefined;
-  const root_author_uri_str    = root_author_uri_node   ? to_full_url_when_not(root_author_uri_node["#text"], target.url) : undefined;
+  const root_author_uri_str    = root_author_uri_node   ? new URL(root_author_uri_node["#text"], target.url).href : undefined;
+  //                   for relative path to absolute path ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //                 Others are same
 
   const root_link_node = <xml_node | undefined>feed["~children"].find(e => e["~name"] === "link");
-  const root_link_str  = root_link_node && (typeof root_link_node["@href"] === "string") ? to_full_url_when_not(root_link_node["@href"], target.url) : undefined;
+  const root_link_str  = root_link_node && (typeof root_link_node["@href"] === "string") ? new URL(root_link_node["@href"], target.url).href : undefined;
 
   const root_icon_node = <xml_node | undefined>feed["~children"].find(e => e["~name"] === "icon");
-  const root_icon_str  = root_icon_node ? to_full_url_when_not(root_icon_node["#text"], target.url) : undefined;
+  const root_icon_str  = root_icon_node ? new URL(root_icon_node["#text"], target.url).href : undefined;
 
   const root_logo_node = <xml_node | undefined>feed["~children"].find(e => e["~name"] === "logo");
-  const root_logo_str  = root_logo_node ? to_full_url_when_not(root_logo_node["#text"], target.url) : undefined;
+  const root_logo_str  = root_logo_node ? new URL(root_logo_node["#text"], target.url).href : undefined;
 
   const root_subtitle_node = <xml_node | undefined>feed["~children"].find(e => e["~name"] === "subtitle");
   const root_subtitle_str  = root_subtitle_node?.["#text"];
@@ -126,7 +128,7 @@ export async function fetch_atom(target: FeedTarget, general_timeout_ms?: number
     const author_name_str   = author_name_node  ? author_name_node["#text"]  : undefined;
     const author_email_str  = author_email_node ? author_email_node["#text"] : undefined;
     const author_email_uri  = author_email_str  ? ("mailto:" + author_email_str) : undefined;
-    const author_uri_str    = author_uri_node   ? to_full_url_when_not(author_uri_node["#text"], target.url) : undefined;
+    const author_uri_str    = author_uri_node   ? new URL(author_uri_node["#text"], target.url).href : undefined;
 
     const content_node = <xml_node | undefined>entry?.["~children"].find(node => node["~name"] === "content");
     const content_str  = content_node ? content_node["#text"] : undefined;
