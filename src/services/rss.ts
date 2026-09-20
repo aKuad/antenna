@@ -6,7 +6,7 @@
 import { parse, xml_node } from "jsr:@libs/xml@7";
 
 import { FeedTarget, FetchResult } from "../types.ts";
-import { is_resource_exists, to_full_url_when_not } from "../util.ts";
+import { is_resource_exists } from "../util.ts";
 
 
 /**
@@ -112,7 +112,8 @@ export async function fetch_rss(target: FeedTarget, general_timeout_ms?: number)
 
   const root_image_node     = <xml_node | undefined>channel["~children"].find(node => node["~name"] === "image");
   const root_image_url_node = root_image_node ? <xml_node | undefined>root_image_node["~children"].find(node => node["~name"] === "url") : undefined;
-  const root_image_url_str  = root_image_url_node ? to_full_url_when_not(root_image_url_node["#text"], target.url) : undefined;
+  const root_image_url_str  = root_image_url_node ? new URL(root_image_url_node["#text"], target.url).href : undefined;
+  //             for relative path to absolute path ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
   // Other core data
