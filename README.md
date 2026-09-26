@@ -77,6 +77,9 @@ Timeout also can be specified at `fetch_posts([targets], timeout_ms)`. When both
   - ⚠️ This API has rate limitation - 60 requests/hour
 - [RSS feed](https://www.rssboard.org/rss-specification)
   - `{ feed_type: "rss", url: string }`
+- [Zenn](https://zenn.dev/)
+  - `{ site_name: "zenn", uid: string }`
+  - ⚠️ This API specification is unofficial
 
 ## Migration from v1.x.x to v2.x.x
 
