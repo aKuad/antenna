@@ -6,6 +6,7 @@
 import { FeedTarget, SiteTarget, FetchResult, Post, FailReason } from "./types.ts";
 import { isFeedTarget } from "./util.ts";
 import { fetch_atom } from "./services/atom.ts";
+import { fetch_note } from "./services/note.ts";
 import { fetch_qiita } from "./services/qiita.ts";
 import { fetch_rss } from "./services/rss.ts";
 import { fetch_zenn } from "./services/zenn.ts";
@@ -37,6 +38,9 @@ export async function fetch_posts(targets: Array<FeedTarget | SiteTarget>, gener
       }
     } else {
       switch(target.site_name) {
+        case "note":
+          return fetch_note(target, general_timeout_ms, connect_test_server);
+
         case "qiita":
           return fetch_qiita(target, general_timeout_ms, connect_test_server);
 
