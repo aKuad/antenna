@@ -72,6 +72,9 @@ Timeout also can be specified at `fetch_posts([targets], timeout_ms)`. When both
 
 - [Atom feed](https://www.rfc-editor.org/rfc/rfc4287)
   - `{ feed_type: "atom", url: string }`
+- [note](https://note.com/)
+  - `{ site_name: "note", uid: string }`
+  - ⚠️ This API specification is unofficial
 - [Qiita](https://qiita.com)
   - `{ site_name: "qiita", uid: string }`
   - ⚠️ This API has rate limitation - 60 requests/hour
