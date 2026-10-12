@@ -12,7 +12,7 @@ import { SiteTarget, FetchResult } from "../types.ts";
 /**
  * Zenn articles fetching
  *
- * @param user_id User ID of Zenn to fetch
+ * @param target Target Zenn user to fetch
  * @param general_timeout_ms Limit duration of fetching in milliseconds
  * @param connect_test_server DO NOT SET TRUE EXCEPT FOR TEST - Switch api url to localhost
  * @returns Fetched posts and/or fail reason
