@@ -142,6 +142,8 @@ export async function fetch_atom(target: FeedTarget, general_timeout_ms?: number
     const published_node = <xml_node | undefined>entry?.["~children"].find(node => node["~name"] === "published");
     const published_date = published_node ? new Date(published_node["#text"]) : undefined;
 
+    const description = (summary_str || content_str || root_subtitle_str)?.replaceAll(/\n+/g, " ").slice(0, 200);
+
     fetch_result.posts.push({
       site_name: site_name,
       site_icon_url: root_icon_str || site_icon_url,
@@ -150,7 +152,7 @@ export async function fetch_atom(target: FeedTarget, general_timeout_ms?: number
       author_name: author_name_str || root_author_name_str || site_name,
       author_url: author_uri_str || root_author_uri_str || author_email_uri || root_author_email_uri,
       author_icon_url: undefined,
-      description: summary_str || content_str || root_subtitle_str,
+      description,
       thumbnail_url: root_logo_str,
       post_date: published_date,
       update_date: updated_date
