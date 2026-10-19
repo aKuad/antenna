@@ -90,7 +90,7 @@ export async function fetch_note(target: SiteTarget, general_timeout_ms?: number
           author_name: content.user.nickname,
           author_url: `https://note.com/${content.user.urlname}`,
           author_icon_url: content.user.userProfileImagePath,
-          description: content.body.replaceAll(/\n+/g, "  ").slice(0, 200),
+          description: content.body.replaceAll(/\n+/g, " ").slice(0, 200),  // First part of raw body as description
           thumbnail_url: content.eyecatch || content.thumbnailExternalUrl || "",
           post_date: new Date(content.publishAt),
           update_date: new Date(content.publishAt)

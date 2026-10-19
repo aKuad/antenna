@@ -162,6 +162,8 @@ export async function fetch_rss(target: FeedTarget, general_timeout_ms?: number)
     const pub_date_node = <xml_node | undefined>entry?.["~children"].find(node => node["~name"] === "pubDate");
     const pub_date_date = pub_date_node ? new Date(pub_date_node["#text"]) : undefined;
 
+    const description = (description_str || root_description_str).replaceAll(/\n+/g, " ").slice(0, 200);
+
     fetch_result.posts.push({
       site_name: site_name,
       site_icon_url: site_icon_uri,
@@ -170,7 +172,7 @@ export async function fetch_rss(target: FeedTarget, general_timeout_ms?: number)
       author_name: author_name || root_managing_editor_name || root_web_master_name || root_copyright_str || site_name,
       author_url: author_email_uri || root_managing_editor_email_uri || root_web_master_email_uri,
       author_icon_url: undefined,
-      description: description_str || root_description_str,
+      description,
       thumbnail_url: enclosure_img_url || root_image_url_str,
       post_date: pub_date_date || root_pub_date_date,
       update_date: pub_date_date || root_pub_date_date || new Date()
