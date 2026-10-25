@@ -21,8 +21,9 @@ while read ref_name dummy_var ; do
 
     branch_name_target=`echo $branch_name -n | awk -F / '{print $1}'`
     branch_name_act=`echo $branch_name -n | awk -F / '{print $2}'`
+    branch_name_desc=`echo $branch_name -n | awk -F / '{print $3}'`
 
-    if [ "$branch_name_target" = "" ] || [ "$branch_name_act" = "" ]; then
+    if [ "$branch_name_target" = "" ] || [ "$branch_name_act" = "" ] || [ "$branch_name_desc" = "" ]; then
       echo "\033[1;31mInvalid branch name format\033[0m" > /dev/stderr
       echo '\033[0;33m    Hint: Branch name format is `<target>/<action>/<desc>`\033[0m' > /dev/stderr
       echo '\033[0;33m          For details, see CONTRIBUTING.md\033[0m' > /dev/stderr
