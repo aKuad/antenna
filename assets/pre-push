@@ -9,7 +9,6 @@
 # Run for each references
 while read ref_name dummy_var ; do
   # String 'refs/heads/' remove succeeded, means the reference is branch
-  # For tag pushing, no branch name checking
   if [ "${ref_name#refs/heads/}" != "$ref_name" ]; then
 
     branch_name="${ref_name#refs/heads/}"
@@ -47,6 +46,25 @@ while read ref_name dummy_var ; do
 
     if [ $is_verify_ok = 0 ]; then
       exit 1  # disallow committing
+    fi
+  fi
+
+
+  # String 'refs/tags/' remove succeeded, means the reference is tag
+  if [ "${ref_name#refs/tags/}" != "$ref_name" ]; then
+    which jq > /dev/null
+    if [ $? != 0 ]; then
+      echo "\033[0;33mjq command not installed. Version verification will be skipped.\033[0m" > /dev/stderr
+      exit 0
+    fi
+
+    cd `git rev-parse --show-toplevel`
+    ver_tag_name="${ref_name#refs/tags/v}"
+    ver_jsr_json=`jq .version -r jsr.json`
+
+    if [ "$ver_tag_name" != "$ver_jsr_json" ]; then
+      echo "\033[1;31mVersion at tag name ($ver_tag_name) and jsr.json ($ver_jsr_json) mismatched\033[0m" > /dev/stderr
+      exit 1  # disallow pushing
     fi
   fi
 done
