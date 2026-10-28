@@ -4,6 +4,15 @@ There are development conventions in this repository.
 
 Main purpose is organizing and reminding conventions for me ([aKuad](https://github.com/aKuad)).
 
+## At first before contributing: Git hook setup
+
+Before start working, run `./git-hook-setup` for apply some hooks. The hooks for:
+
+1. Branch naming validation before push
+2. Tag name matching between tag name and `jsr.json` `"version"` value check before push
+3. Commit message format validation check before commit
+4. Commit signed-off check before commit
+
 ## Workflow conventions
 
 1 issue, 1 branch, 1 PR
