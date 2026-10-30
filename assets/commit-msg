@@ -14,7 +14,7 @@ is_verify_ok=1
 
 if [ "${1##*/}" = "MERGE_MSG" ]; then
   echo "\033[1;36mPrefix verification skipped because of merge committing.\033[0m"
-elif [ "`echo "$msg_firstline" | grep -E '^(Add|Mod|Fix|Del): \S'`" = "" ]; then
+elif [ "`echo "$msg_firstline" | grep -E '^(Add|Mod|Fix|Del): [^[:space:]]'`" = "" ]; then
   echo "\033[1;31mInvalid prefix\033[0m" > /dev/stderr
   echo "\033[0;33m    Hint: Prefix must be 'Add:', 'Mod:' or 'Fix:'\033[0m" > /dev/stderr
   echo "\033[0;33m          And only 1 whitespace must be had between prefix and message body\033[0m" > /dev/stderr
