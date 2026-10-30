@@ -21,7 +21,7 @@ elif [ "`echo "$msg_firstline" | grep -E '^(Add|Mod|Fix|Del): \S'`" = "" ]; then
   is_verify_ok=0
 fi
 
-if [ "`cat $1 | grep '^Signed-off-by:'`" = "" ]; then
+if [ "`cat $1 | grep -E '^Signed-off-by: .+ <.+@.+\..+>$'`" = "" ]; then
   echo "\033[1;31mNo signed-off\033[0m" > /dev/stderr
   echo "\033[0;33m    Hint: -s option to sign-off\033[0m" > /dev/stderr
   is_verify_ok=0
