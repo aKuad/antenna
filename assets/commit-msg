@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
 #
 # Commit message verification git hook
-# - Check the message has correct prefix and signed-off
+# - Check the message has correct prefix
+# - Check the message has signed-off with correct format
 #
 # Author: aKuad
 #
