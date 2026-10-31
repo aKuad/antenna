@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
 #
 # Commit message verification git hook
-# - Check the message has correct prefix and signed-off
+# - Check the message has correct prefix
+# - Check the message has signed-off with correct format
 #
 # Author: aKuad
 #
@@ -14,14 +15,14 @@ is_verify_ok=1
 
 if [ "${1##*/}" = "MERGE_MSG" ]; then
   echo "\033[1;36mPrefix verification skipped because of merge committing.\033[0m"
-elif [ "`echo "$msg_firstline" | grep -E '^(Add|Mod|Fix|Del): \S'`" = "" ]; then
+elif ! echo "$msg_firstline" | grep -Eq '^(Add|Mod|Fix|Del): [^[:space:]]'; then
   echo "\033[1;31mInvalid prefix\033[0m" > /dev/stderr
-  echo "\033[0;33m    Hint: Prefix must be 'Add:', 'Mod:' or 'Fix:'\033[0m" > /dev/stderr
+  echo "\033[0;33m    Hint: Prefix must be 'Add:', 'Mod:', 'Fix:' or 'Del:'\033[0m" > /dev/stderr
   echo "\033[0;33m          And only 1 whitespace must be had between prefix and message body\033[0m" > /dev/stderr
   is_verify_ok=0
 fi
 
-if [ "`cat $1 | grep '^Signed-off-by:'`" = "" ]; then
+if ! grep -Eq '^Signed-off-by: .+ <.+@.+\..+>$' "$1"; then
   echo "\033[1;31mNo signed-off\033[0m" > /dev/stderr
   echo "\033[0;33m    Hint: -s option to sign-off\033[0m" > /dev/stderr
   is_verify_ok=0
