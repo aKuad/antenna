@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
 #
-# Branch name verification git hook
+# Branch name and tag name verification git hook
 # - Check the branch name format is correct
+# - Check version number on the tag name and jsr.json "version" field is same
 #
 # Author: aKuad
 #
@@ -31,14 +32,14 @@ while read ref_name dummy_var ; do
 
     is_verify_ok=1
 
-    if [ "`echo $branch_name_target | grep -E '^(feature|doc|infra|misc)'`" = "" ]; then
+    if ! echo $branch_name_target | grep -Eq '^(feature|doc|infra|misc)$'; then
       echo "\033[1;31mInvalid target word\033[0m" > /dev/stderr
       echo "\033[0;33m    Hint: Target word must be 'feature', 'doc', 'infra' or 'misc'" > /dev/stderr
       echo '\033[0;33m          For details, see CONTRIBUTING.md\033[0m' > /dev/stderr
       is_verify_ok=0
     fi
 
-    if [ "`echo $branch_name_act | grep -E '^(add|mod|fix|del)'`" = "" ]; then
+    if ! echo $branch_name_act | grep -Eq '^(add|mod|fix|del)$'; then
       echo "\033[1;31mInvalid action word\033[0m" > /dev/stderr
       echo "\033[0;33m    Hint: Action word must be 'add', 'mod', 'fix' or 'del'" > /dev/stderr
       echo '\033[0;33m          For details, see CONTRIBUTING.md\033[0m' > /dev/stderr
