@@ -10,7 +10,8 @@ Close #*issue number here*
 - [ ] Build or lint has passed
 
 <!-- For tg/infra: -->
-No checks for infra maintaining.
+- [ ] Created or fixed test code
+<!-- If no tests, write reason. -->
 
 <!-- For tg/misc -->
 <!-- Write anything if any -->
