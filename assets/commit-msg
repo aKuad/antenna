@@ -7,9 +7,9 @@
 # Author: aKuad
 #
 
-msg_firstline=`cat "$1" | grep -v '^#' | grep -v '^\s*$' | sed -n -e '1p'`
-#                         ~~~~~~~~~~~~   ~~~~~~~~~~~~~~~
-#                       Ignore comment   Ignore blank or spaces only lines
+msg_firstline=`grep -Ev '(^#|^[[:space::]]*$)' "$1" | sed -n -e '1p'`
+#                         ~~ ~~~~~~~~~~~~~~~
+#      Ignore comment lines   Ignore blank or spaces only lines
 
 exit_code=0
 
