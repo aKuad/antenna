@@ -9,7 +9,7 @@ on:
 
 jobs:
   # Test all TS code by Deno
-  deno-test:
+  deno-test-ts:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -22,8 +22,8 @@ jobs:
       uses: denoland/setup-deno@v2
       with:
         deno-version: v2.x
-    - name: Test all modules
-      run: deno test --allow-read --allow-net --coverage
+    - name: Test all TS modules
+      run: deno test --allow-read --allow-net --coverage --ignore=hooks
     - name: Report coverage
       env:
         NO_COLOR: "true"  # Disable deno color output
@@ -31,6 +31,24 @@ jobs:
         echo '## Deno coverage report' >> $GITHUB_STEP_SUMMARY
         echo >> $GITHUB_STEP_SUMMARY  # Print blank newline
         deno coverage >> $GITHUB_STEP_SUMMARY
+
+
+  # Test all Git hook scripts by Deno
+  deno-test-hooks:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/tests/hooks
+
+    steps:
+    - name: Source checkout
+      uses: actions/checkout@v7
+    - name: Setup Deno
+      uses: denoland/setup-deno@v2
+      with:
+        deno-version: v2.x
+    - name: Test all git hook scripts
+      run: deno test --allow-read --allow-write --allow-run
 
 
   # Lint all TS code by Deno
