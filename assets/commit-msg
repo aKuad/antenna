@@ -22,8 +22,8 @@ elif ! echo "$msg_firstline" | grep -Eq '^(Add|Mod|Fix|Del): [^[:space:]]'; then
   exit_code=$((exit_code + 1))  # Bit 0 for prefix error
 fi
 
-if ! grep -Eq '^Signed-off-by: .+ <.+@.+\..+>$' "$1"; then
-  echo "\033[1;31mNo signed-off\033[0m" > /dev/stderr
+if ! grep -Eq '^Signed-off-by: [^[:space:]].+[^[:space:]] <.+@.+\..+>$' "$1"; then
+  echo "\033[1;31mSigned-off missing or invalid\033[0m" > /dev/stderr
   echo "\033[0;33m    Hint: -s option to sign-off\033[0m" > /dev/stderr
   exit_code=$((exit_code + 2))  # Bit 1 for signed-off error
 fi
