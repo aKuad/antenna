@@ -81,6 +81,9 @@ Deno.test(async function test_commit_msg(t) {
   /**
    * - When no prefix, return code 0b01
    * - When unknown prefix, return code 0b01
+   *   - Other of (Add, Mod, Fix, Del)
+   *   - Initial is lower case
+   *   - Not normal single space separation between prefix and message
    * - When invalid prefix format, return code 0b01
    */
   await t.step(async function commit_msg_err_prefix() {
@@ -115,6 +118,9 @@ Deno.test(async function test_commit_msg(t) {
   /**
    * - When no sign-off, return code 0b10
    * - When incorrect sign-off format, return code 0b10
+   *   - No name
+   *   - Not single space separation before/after name field
+   *   - Invalid email format
    * - Can keep sign-off checking even if for merge commit
    */
   await t.step(async function commit_msg_err_signoff() {
