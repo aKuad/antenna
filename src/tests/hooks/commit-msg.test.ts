@@ -120,6 +120,10 @@ Deno.test(async function test_commit_msg(t) {
   await t.step(async function commit_msg_err_signoff() {
     const no_signoff_promise           = commit_msg_run("Add: mes\n", false);
     const empty_signoff_promise        = commit_msg_run("Add: mes\n\nSigned-off-by:\n", false);
+    const no_name_promise              = commit_msg_run("Add: mes\n\nSigned-off-by: <test@example.com>\n", false);
+    const no_spaces_promise            = commit_msg_run("Add: mes\n\nSigned-off-by:Test User<test@example.com>\n", false);
+    const multiple_spaces_1_promise    = commit_msg_run("Add: mes\n\nSigned-off-by:  Test User <test@example.com>\n", false);
+    const multiple_spaces_2_promise    = commit_msg_run("Add: mes\n\nSigned-off-by: Test User  <test@example.com>\n", false);
     const no_email_promise             = commit_msg_run("Add: mes\n\nSigned-off-by: Test User\n", false);
     const no_close_bracket_promise     = commit_msg_run("Add: mes\n\nSigned-off-by: Test User <test@example.com\n", false);
     const invalid_email_at_promise     = commit_msg_run("Add: mes\n\nSigned-off-by: Test User <test-example.com>\n", false);
@@ -129,6 +133,10 @@ Deno.test(async function test_commit_msg(t) {
 
     const no_signoff_actual           = await no_signoff_promise;
     const empty_signoff_actual        = await empty_signoff_promise;
+    const no_name_actual              = await no_name_promise;
+    const no_spaces_actual            = await no_spaces_promise;
+    const multiple_spaces_1_actual    = await multiple_spaces_1_promise;
+    const multiple_spaces_2_actual    = await multiple_spaces_2_promise;
     const no_email_actual             = await no_email_promise;
     const no_close_bracket_actual     = await no_close_bracket_promise;
     const invalid_email_at_actual     = await invalid_email_at_promise;
@@ -138,6 +146,10 @@ Deno.test(async function test_commit_msg(t) {
 
     assertEquals(no_signoff_actual.code          , 0b10, no_signoff_actual.stderr);
     assertEquals(empty_signoff_actual.code       , 0b10, empty_signoff_actual.stderr);
+    assertEquals(no_name_actual.code             , 0b10, no_name_actual.stderr);
+    assertEquals(no_spaces_actual.code           , 0b10, no_spaces_actual.stderr);
+    assertEquals(multiple_spaces_1_actual.code   , 0b10, multiple_spaces_1_actual.stderr);
+    assertEquals(multiple_spaces_2_actual.code   , 0b10, multiple_spaces_2_actual.stderr);
     assertEquals(no_email_actual.code            , 0b10, no_email_actual.stderr);
     assertEquals(no_close_bracket_actual.code    , 0b10, no_close_bracket_actual.stderr);
     assertEquals(invalid_email_at_actual.code    , 0b10, invalid_email_at_actual.stderr);
