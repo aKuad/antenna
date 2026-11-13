@@ -16,7 +16,7 @@ while read ref_name dummy_var ; do
 
     if [ $branch_name = "main" ]; then
       echo "\033[1;31mDirect committing to main is prohibited\033[0m" > /dev/stderr
-      exit 1
+      exit 1  # Bit 0 for main direct committing error
     fi
 
     branch_name_target=`echo $branch_name -n | awk -F / '{print $1}'`
@@ -27,28 +27,26 @@ while read ref_name dummy_var ; do
       echo "\033[1;31mInvalid branch name format\033[0m" > /dev/stderr
       echo '\033[0;33m    Hint: Branch name format is `<target>/<action>/<desc>`\033[0m' > /dev/stderr
       echo '\033[0;33m          For details, see CONTRIBUTING.md\033[0m' > /dev/stderr
-      exit 1
+      exit 2  # Bit 1 for invalid branch format error
     fi
 
-    is_verify_ok=1
+    exit_code=0
 
     if ! echo $branch_name_target | grep -Eq '^(feature|doc|infra|misc)$'; then
       echo "\033[1;31mInvalid target word\033[0m" > /dev/stderr
       echo "\033[0;33m    Hint: Target word must be 'feature', 'doc', 'infra' or 'misc'" > /dev/stderr
       echo '\033[0;33m          For details, see CONTRIBUTING.md\033[0m' > /dev/stderr
-      is_verify_ok=0
+      exit_code=$((exit_code + 4))  # Bit 2 for invalid target word error
     fi
 
     if ! echo $branch_name_act | grep -Eq '^(add|mod|fix|del)$'; then
       echo "\033[1;31mInvalid action word\033[0m" > /dev/stderr
       echo "\033[0;33m    Hint: Action word must be 'add', 'mod', 'fix' or 'del'" > /dev/stderr
       echo '\033[0;33m          For details, see CONTRIBUTING.md\033[0m' > /dev/stderr
-      is_verify_ok=0
+      exit_code=$((exit_code + 8))  # Bit 3 for invalid action word error
     fi
 
-    if [ $is_verify_ok = 0 ]; then
-      exit 1  # disallow committing
-    fi
+    exit $exit_code
   fi
 
 
@@ -66,7 +64,7 @@ while read ref_name dummy_var ; do
 
     if [ "$ver_tag_name" != "$ver_jsr_json" ]; then
       echo "\033[1;31mVersion at tag name ($ver_tag_name) and jsr.json ($ver_jsr_json) mismatched\033[0m" > /dev/stderr
-      exit 1  # disallow pushing
+      exit 16 # Bit 4 for jsr.json version and tag version mismatch error
     fi
   fi
 done
