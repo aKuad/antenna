@@ -4,8 +4,9 @@
 
 import { serveDir } from "jsr:@std/http@1";
 import { assert, assertFalse } from "jsr:@std/assert@1";
+import { delay } from "jsr:@std/async@1/delay";
 
-import { is_resource_exists, isFeedTarget, sleep } from "../util.ts";
+import { is_resource_exists, isFeedTarget } from "../util.ts";
 
 
 Deno.test(async function test_util(t) {
@@ -37,15 +38,7 @@ Deno.test(async function test_util(t) {
   });
 
 
-  /**
-   * - It checked manually
-   */
-  // await t.step(async function sleep_true() {
-  //   await sleep(1000);
-  // });
-
-
   /* Test HTTP server shutdown */
-  await sleep(100); // Interval for fetch() completed before shutdown
+  await delay(100); // Interval for fetch() completed before shutdown
   await test_server.shutdown();
 });
