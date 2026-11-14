@@ -15,7 +15,7 @@ deno test --allow-net --allow-read
 deno test --allow-net --allow-read --coverage
 ```
 
-> [!WARN]
+> [!WARNING]
 >
 > Do not add `--parallel` option.
 
