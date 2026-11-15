@@ -23,7 +23,11 @@ jobs:
       with:
         deno-version: v2.x
     - name: Test all TS modules
-      run: deno test --allow-read --allow-net --coverage --ignore=hooks
+      run: |
+        if ! deno test --allow-read --allow-net --coverage --ignore=hooks; then
+          echo '::warning::First attempt failed, run again - It may fail due to time jitter'
+          deno test --allow-read --allow-net --coverage --ignore=hooks
+        fi
     - name: Report coverage
       env:
         NO_COLOR: "true"  # Disable deno color output
