@@ -4,8 +4,7 @@
 
 import { serveDir } from "jsr:@std/http@1";
 import { assertEquals } from "jsr:@std/assert@1";
-
-import { sleep } from "../util.ts";
+import { delay } from "jsr:@std/async@1/delay";
 
 import { fetch_posts } from "../fetch_posts.ts";
 import { FeedTarget, FetchResult } from "../types.ts";
@@ -19,7 +18,7 @@ Deno.test(async function test_rss(t) {
 
     const response_delay_ms = request.headers.get("late-response-test");
     if(response_delay_ms)
-      await sleep(Number(response_delay_ms));
+      await delay(Number(response_delay_ms));
 
     return serveDir(request, { fsRoot: "./test_data/rss", urlRoot: "", quiet: true })
   });
@@ -210,6 +209,6 @@ Deno.test(async function test_rss(t) {
 
 
   /* Test HTTP server shutdown */
-  await sleep(100); // Interval for fetch() completed before shutdown
+  await delay(100); // Interval for fetch() completed before shutdown
   await test_server.shutdown();
 });
