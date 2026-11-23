@@ -18,7 +18,7 @@ export type FeedTarget = {
  * Explain a target of site
  */
 export type SiteTarget = {
-  site_name: "note" | "qiita" | "zenn"
+  site_name: "dev_community" | "note" | "qiita" | "zenn"
   uid: string
   headers?: HeadersInit
   timeout_ms?: number
