@@ -72,6 +72,8 @@ Timeout also can be specified at `fetch_posts([targets], timeout_ms)`. When both
 
 - [Atom feed](https://www.rfc-editor.org/rfc/rfc4287)
   - `{ feed_type: "atom", url: string }`
+- [DEV Community](https://dev.to/)
+  - `{ site_name: "dev_community", uid: string }`
 - [note](https://note.com/)
   - `{ site_name: "note", uid: string }`
   - ⚠️ This API specification is unofficial
