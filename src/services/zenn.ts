@@ -24,7 +24,7 @@ export async function fetch_zenn(target: SiteTarget, general_timeout_ms?: number
   const base_url = connect_test_server ? "http://localhost:8000" : "https://zenn.dev/api/articles";
   const url = new URL(base_url);
   url.searchParams.append("count", "48"); // Maximum fetching count at once is 48
-  url.searchParams.append("username", `${target.uid}`);
+  url.searchParams.append("username", target.uid);
 
 
   // Fetching loop
@@ -55,7 +55,7 @@ export async function fetch_zenn(target: SiteTarget, general_timeout_ms?: number
       await res.bytes();
       return {
         posts: [],
-        fail_reasons: [{ target, severity: "error", category: "HTTPError", detail: `${res.statusText}` }]
+        fail_reasons: [{ target, severity: "error", category: "HTTPError", detail: res.statusText }]
       };
     }
 

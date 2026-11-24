@@ -55,7 +55,7 @@ export async function fetch_qiita(target: SiteTarget, general_timeout_ms?: numbe
       await res.bytes();
       return {
         posts: [],
-        fail_reasons: [{ target, severity: "error", category: "HTTPError", detail: `${res.statusText}` }]
+        fail_reasons: [{ target, severity: "error", category: "HTTPError", detail: res.statusText }]
       };
     }
 
