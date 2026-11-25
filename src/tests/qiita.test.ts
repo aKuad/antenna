@@ -22,7 +22,7 @@ Deno.test(async function test_rss(t) {
       await delay(Number(response_delay_ms));
 
     if(request.headers.get("rate-limit-exceeded-test") === "true")
-      return await serveFile(request, "./test_data/qiita/err_rate_limit_exceeded.json");
+      return new Response(Deno.readTextFileSync("./test_data/qiita/err_rate_limit_exceeded.json"), { status: 429 });
 
     if(request.headers.get("500-error-test") === "true")
       return new Response("", { status: 500 });
