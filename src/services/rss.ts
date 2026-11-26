@@ -37,7 +37,7 @@ export async function fetch_rss(target: FeedTarget, general_timeout_ms?: number)
     await res.bytes();
     return {
       posts: [],
-      fail_reasons: [{ target, severity: "error", category: "HTTPError", detail: `${res.statusText}` }]
+      fail_reasons: [{ target, severity: "error", category: "HTTPError", detail: res.statusText }]
     };
   }
 
