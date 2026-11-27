@@ -63,7 +63,7 @@ export async function fetch_qiita(target: SiteTarget, general_timeout_ms?: numbe
     // Data extraction
     const articles = await res.json();
     //// 400 HTTP error
-    if(typeof articles.message === "string") {
+    if(!res.ok) {
       return {
         posts: [],
         fail_reasons: [{
