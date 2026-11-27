@@ -9,29 +9,31 @@ import { delay } from "jsr:@std/async@1/delay";
 import { fetch_posts } from "../fetch_posts.ts";
 import { SiteTarget, FetchResult } from "../types.ts";
 
+
 Deno.test(async function test_note(t) {
   /* Test HTTP server start */
   const test_server = Deno.serve(async (request) => {
     const url = new URL(request.url);
-    if (url.pathname === "/favicon.ico")
+    if(url.pathname === "/favicon.ico")
       return serveFile(request, "./test_data/qiita/favicon.ico");
 
     const response_delay_ms = request.headers.get("late-response-test");
-    if (response_delay_ms)
+    if(response_delay_ms)
       await delay(Number(response_delay_ms));
 
-    if (request.headers.get("500-error-test") === "true")
+    if(request.headers.get("500-error-test") === "true")
       return new Response("", { status: 500 });
 
-    if (url.pathname === "/no-posts")
+    if(url.pathname === "/no-posts")
       return new Response(Deno.readTextFileSync("./test_data/note/err_no_posts.json"));
 
-    if (url.pathname !== "/uid")
+    if(url.pathname !== "/uid")
       return new Response(Deno.readTextFileSync("./test_data/note/err_uid_non_exists.json"), { status: 404 });
 
     const res_page = url.searchParams.get("page") === "2" ? "2" : "1";  // If no specified, select 1
     return await serveFile(request, `./test_data/note/true_items_page${res_page}.json`);
   });
+
 
   /**
    * - Can fetch and return posts data from specified user ID
@@ -99,6 +101,7 @@ Deno.test(async function test_note(t) {
     assertEquals(posts_actual, posts_expected);
   });
 
+
   /**
    * - When response reached timeout duration, returns "TimeoutError" fail reason
    * - When invalid header passed, returns "FetchParamError" fail reason
@@ -130,6 +133,7 @@ Deno.test(async function test_note(t) {
     assertEquals(await server_error_actual  , server_error_expected);
     assertEquals(await no_posts_actual      , no_posts_expected);
   });
+
 
   /* Test HTTP server shutdown */
   await delay(100); // Interval for fetch() completed before shutdown
